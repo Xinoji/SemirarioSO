@@ -36,7 +36,6 @@
             this.ContentPanel = new System.Windows.Forms.Panel();
             this.panelProcesos = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Operacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TME = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -75,7 +74,6 @@
             this.panelResultados = new System.Windows.Forms.Panel();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
             this.ColLote = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColOperacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColTME = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -180,22 +178,17 @@
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Nombre,
             this.ID,
             this.Operacion,
             this.TME});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.dataGridView1.Enabled = false;
             this.dataGridView1.Location = new System.Drawing.Point(3, 52);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 25;
             this.dataGridView1.Size = new System.Drawing.Size(787, 354);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // Nombre
-            // 
-            this.Nombre.HeaderText = "Nombre";
-            this.Nombre.Name = "Nombre";
             // 
             // ID
             // 
@@ -374,7 +367,7 @@
             // colQueryNombre
             // 
             this.colQueryNombre.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colQueryNombre.HeaderText = "Nombre";
+            this.colQueryNombre.HeaderText = "ID";
             this.colQueryNombre.Name = "colQueryNombre";
             this.colQueryNombre.ReadOnly = true;
             // 
@@ -501,6 +494,7 @@
             this.lblNombre.Size = new System.Drawing.Size(49, 15);
             this.lblNombre.TabIndex = 5;
             this.lblNombre.Text = "######";
+            this.lblNombre.Visible = false;
             // 
             // ttlNombre
             // 
@@ -510,6 +504,7 @@
             this.ttlNombre.Size = new System.Drawing.Size(54, 15);
             this.ttlNombre.TabIndex = 4;
             this.ttlNombre.Text = "Nombre:";
+            this.ttlNombre.Visible = false;
             // 
             // progressBarTotal
             // 
@@ -545,7 +540,6 @@
             this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView4.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColLote,
-            this.ColNombre,
             this.ColId,
             this.ColOperacion,
             this.ColTME,
@@ -566,13 +560,6 @@
             this.ColLote.HeaderText = "Lote";
             this.ColLote.Name = "ColLote";
             this.ColLote.ReadOnly = true;
-            // 
-            // ColNombre
-            // 
-            this.ColNombre.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColNombre.HeaderText = "Nombre";
-            this.ColNombre.Name = "ColNombre";
-            this.ColNombre.ReadOnly = true;
             // 
             // ColId
             // 
@@ -616,6 +603,9 @@
             this.Controls.Add(this.buttonsPanel);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             this.buttonsPanel.ResumeLayout(false);
             this.ContentPanel.ResumeLayout(false);
             this.panelProcesos.ResumeLayout(false);
@@ -648,10 +638,6 @@
         private Panel panelProcesar;
         private Panel panelResultados;
         private Panel panelProcesos;
-        private DataGridViewTextBoxColumn Nombre;
-        private DataGridViewTextBoxColumn ID;
-        private DataGridViewTextBoxColumn Operacion;
-        private DataGridViewTextBoxColumn TME;
         private Panel panel1;
         private NumericUpDown numericUpDown1;
         private Label lblProcesos;
@@ -664,17 +650,9 @@
         private DataGridView dataGridView3;
         private DataGridView dataGridView2;
         private Label TT;
-        private DataGridViewTextBoxColumn ColLote;
-        private DataGridViewTextBoxColumn ColNombre;
-        private DataGridViewTextBoxColumn ColId;
-        private DataGridViewTextBoxColumn ColOperacion;
-        private DataGridViewTextBoxColumn ColTME;
-        private DataGridViewTextBoxColumn ColResultado;
         private DataGridViewTextBoxColumn ColResId;
         private DataGridViewTextBoxColumn ColResOp;
         private DataGridViewTextBoxColumn ColResRes;
-        private DataGridViewTextBoxColumn colQueryNombre;
-        private DataGridViewTextBoxColumn ColQueryTME;
         private Label lblRestante;
         private Label label8;
         private Label lblTranscurrido;
@@ -691,5 +669,16 @@
         private Label lblTT;
         private Label lblLotes;
         private Label label1;
+        private Label Key;
+        private DataGridViewTextBoxColumn colQueryNombre;
+        private DataGridViewTextBoxColumn ColQueryTME;
+        private DataGridViewTextBoxColumn ID;
+        private DataGridViewTextBoxColumn Operacion;
+        private DataGridViewTextBoxColumn TME;
+        private DataGridViewTextBoxColumn ColLote;
+        private DataGridViewTextBoxColumn ColId;
+        private DataGridViewTextBoxColumn ColOperacion;
+        private DataGridViewTextBoxColumn ColTME;
+        private DataGridViewTextBoxColumn ColResultado;
     }
 }
