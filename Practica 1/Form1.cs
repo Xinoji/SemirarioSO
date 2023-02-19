@@ -257,9 +257,11 @@ namespace Practica_1
 
                 int i = dataGridView2.Rows.Add();
                 dataGridView2.Rows[i].Cells[0].Value = p.id;
-                dataGridView2.Rows[i].Cells[1].Value = p.id.ToString();
+                dataGridView2.Rows[i].Cells[1].Value = p.TME.ToString();
+                dataGridView2.Rows[i].Cells[2].Value = p.TR.ToString();
+                
             }
-            
+
         }
 
         private void terminar()
@@ -356,8 +358,8 @@ namespace Practica_1
             {
                 case Keys.P: timer1.Enabled = false;break;
                 case Keys.C: timer1.Enabled = true; break;
-                case Keys.E: processError();        break;
-                case Keys.I: processInterruption(); break;
+                case Keys.E: if (timer1.Enabled) processError();        break;
+                case Keys.I: if (timer1.Enabled) processInterruption(); break;
             }
         }
 
@@ -371,8 +373,10 @@ namespace Practica_1
             {
                 dataGridView2.Rows.RemoveAt(0);
                 int row = dataGridView2.Rows.Add();
-                dataGridView2.Rows[row].Cells[0].Value = actual.procesos[proceso].id;
-                dataGridView2.Rows[row].Cells[1].Value = actual.procesos[proceso].id.ToString();
+                dataGridView2.Rows[row].Cells[0].Value = actual.procesos[i].id;
+                dataGridView2.Rows[row].Cells[1].Value = actual.procesos[i].TME.ToString();
+                dataGridView2.Rows[row].Cells[2].Value = actual.procesos[i].TR.ToString();
+
             }
         }
 

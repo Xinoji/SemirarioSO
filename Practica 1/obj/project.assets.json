@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\DELL\\source\\repos\\Seminario de Sistemas Operativos\\Practica 1\\Practica 1.csproj",
+      "projectUniqueName": "C:\\Users\\DELL\\Desktop\\´SSO Programa\\SemirarioSO\\Practica 1\\Practica 1.csproj",
       "projectName": "Practica 1",
-      "projectPath": "C:\\Users\\DELL\\source\\repos\\Seminario de Sistemas Operativos\\Practica 1\\Practica 1.csproj",
+      "projectPath": "C:\\Users\\DELL\\Desktop\\´SSO Programa\\SemirarioSO\\Practica 1\\Practica 1.csproj",
       "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\DELL\\source\\repos\\Seminario de Sistemas Operativos\\Practica 1\\obj\\",
+      "outputPath": "C:\\Users\\DELL\\Desktop\\´SSO Programa\\SemirarioSO\\Practica 1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",

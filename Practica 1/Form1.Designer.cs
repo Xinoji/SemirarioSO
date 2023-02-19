@@ -54,8 +54,6 @@
             this.ColResRes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.colQueryNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColQueryTME = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblRestante = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -79,6 +77,9 @@
             this.ColTME = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColResultado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.colQueryNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColQueryTME = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TR = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buttonsPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
             this.panelProcesos.SuspendLayout();
@@ -354,7 +355,8 @@
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colQueryNombre,
-            this.ColQueryTME});
+            this.ColQueryTME,
+            this.TR});
             this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView2.Location = new System.Drawing.Point(0, 0);
             this.dataGridView2.Name = "dataGridView2";
@@ -363,19 +365,6 @@
             this.dataGridView2.RowTemplate.Height = 25;
             this.dataGridView2.Size = new System.Drawing.Size(263, 316);
             this.dataGridView2.TabIndex = 0;
-            // 
-            // colQueryNombre
-            // 
-            this.colQueryNombre.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colQueryNombre.HeaderText = "ID";
-            this.colQueryNombre.Name = "colQueryNombre";
-            this.colQueryNombre.ReadOnly = true;
-            // 
-            // ColQueryTME
-            // 
-            this.ColQueryTME.HeaderText = "TME";
-            this.ColQueryTME.Name = "ColQueryTME";
-            this.ColQueryTME.ReadOnly = true;
             // 
             // panel2
             // 
@@ -594,6 +583,25 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // colQueryNombre
+            // 
+            this.colQueryNombre.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colQueryNombre.HeaderText = "ID";
+            this.colQueryNombre.Name = "colQueryNombre";
+            this.colQueryNombre.ReadOnly = true;
+            // 
+            // ColQueryTME
+            // 
+            this.ColQueryTME.HeaderText = "TME";
+            this.ColQueryTME.Name = "ColQueryTME";
+            this.ColQueryTME.ReadOnly = true;
+            // 
+            // TR
+            // 
+            this.TR.HeaderText = "TR";
+            this.TR.Name = "TR";
+            this.TR.ReadOnly = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -670,8 +678,6 @@
         private Label lblLotes;
         private Label label1;
         private Label Key;
-        private DataGridViewTextBoxColumn colQueryNombre;
-        private DataGridViewTextBoxColumn ColQueryTME;
         private DataGridViewTextBoxColumn ID;
         private DataGridViewTextBoxColumn Operacion;
         private DataGridViewTextBoxColumn TME;
@@ -680,5 +686,8 @@
         private DataGridViewTextBoxColumn ColOperacion;
         private DataGridViewTextBoxColumn ColTME;
         private DataGridViewTextBoxColumn ColResultado;
+        private DataGridViewTextBoxColumn colQueryNombre;
+        private DataGridViewTextBoxColumn ColQueryTME;
+        private DataGridViewTextBoxColumn TR;
     }
 }
