@@ -14,14 +14,18 @@ namespace Practica_1
         int proceso;
         int loteActual;
         int tm;
-        lote actual;
-        Queue<lote> lotes;
+        List<proceso> Listos;
+        proceso Ejecucion;
+        List<proceso> Bloqueados;
+        Queue<proceso> Nuevos;
         #endregion
 
         public Form1()
         {
             InitializeComponent();
-            
+            Nuevos = new Queue<proceso>();
+            Bloqueados = new List<proceso>();
+            Listos = new List<proceso>();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -36,7 +40,6 @@ namespace Practica_1
             Random nums = new Random();
             char op;
             
-            
             while (numericUpDown1.Value > Rows.Count)
             {
                 switch (nums.Next(0, 5))
@@ -48,7 +51,7 @@ namespace Practica_1
                     case 5: op = '%'; break;
                     default:op = '+'; break;
                 }
-                //agregar generacion aleatoria
+
                 row = Rows.Add();
                 Rows[row].Cells[0].Value = row;
                 Rows[row].Cells[1].Value = $"{nums.Next(0, 100)} {op} {nums.Next(0, 100)}";
@@ -64,20 +67,30 @@ namespace Practica_1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (createLotes() | (lotes.Count < 0))
+            if (createLotes() | (Nuevos.Count < 0))
             {
                 return;
             }
             panelProcesos.Visible = !panelProcesos.Visible;
-            actual = lotes.Dequeue();
-            dgvProcessAdd();
-            dataGridView2.Rows.RemoveAt(0);
+
             time = (0, 0);
+
+            AddProcess();
+            AddProcess();
+            AddProcess();
+            AddProcess();
+
+            foreach (proceso p in Listos)
+                dgvProcessAdd(p);
+
+            next_process();
+
+            
             updateProcess();
-            loteActual++;
+
             lblTT.Text = "0";
             lblTranscurrido.Text = "0";
-            lblRestante.Text = (actual.procesos[proceso].TME - 0).ToString();
+            lblRestante.Text = (Ejecucion.TME - 0).ToString();
             
             button1.Enabled = false;
             timer1.Start();
@@ -89,18 +102,17 @@ namespace Practica_1
         private bool createLotes()
         {
             List<int> id = new List<int>();
-            proceso[] temp = new proceso[] {new proceso(),new proceso(),new proceso(),new proceso()};
-            lote l = new lote();
-            lotes = new Queue<lote>();
-            int i = 0;
+            proceso temp;
+            
             foreach (DataGridViewRow rows in dataGridView1.Rows)
             {
+                temp = new proceso();
                 bool valid = true;
                 var row = rows.Cells;
 
                 try
                 {
-                    temp[i].TME = (int)row[2].Value;
+                    temp.TME = (int)row[2].Value;
                 }
                 catch (Exception)
                 {
@@ -109,7 +121,7 @@ namespace Practica_1
                     return true;
                 }
 
-                if (temp[i].TME < 1)
+                if (temp.TME < 1)
                 {
                     MessageBox.Show($"Tiempo invalido en: {dataGridView1.Rows.IndexOf(rows)}",
                         "Tiempo invalid", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -131,10 +143,10 @@ namespace Practica_1
                     return true;
                 }
                                             
-                temp[i].operacion = (string)row[1].Value;
+                temp.operacion = (string)row[1].Value;
                 try
                 {
-                    (temp[i].resultado, valid) = getOP(temp[i].operacion);
+                    (temp.resultado, valid) = getOP(temp.operacion);
                 }
                 catch (Exception)
                 {
@@ -148,30 +160,28 @@ namespace Practica_1
                     return true;
                 }
 
-                temp[i].id = (int)row[0].Value;
-                tm += temp[i].TME;
-                temp[i].TR = temp[i].TME;
-                temp[i].terminado = false;
+                temp.id = (int)row[0].Value;
+                tm += temp.TME;
                 id.Add((int)row[0].Value);
+                Nuevos.Enqueue(temp);
 
-                if (i >= 3)
-                {
-                    l.procesos = temp;
-                    lotes.Enqueue(l);
-                    l = new lote();
-                    temp = new proceso[] { new proceso(), new proceso(), new proceso(), new proceso() };
-                    i = -1;
-                }
-                i++;
-
-            }
-            if (i > 0)
-            {
-                l.procesos = temp;
-                lotes.Enqueue(l);
             }
             return false;
         }
+
+        private void AddProcess() 
+        {
+            proceso p;
+
+            if(Nuevos.Count > 0) 
+            {
+                p = Nuevos.Dequeue();
+                p.Llegada = time.total;
+                Listos.Add(p);
+                //agregar tiempo de llegada
+            }
+        }
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -180,89 +190,167 @@ namespace Practica_1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            bool vacio = false;
+
             time.total++;
-            actual.procesos[proceso].TR--;
-            if (actual.procesos[proceso].TR == 0)
+            countTime();
+
+            if (Ejecucion == null) 
             {
-                actual.procesos[proceso].terminado = true;
-                addResultado();
                 next_process();
-                
-                if (proceso == 4)
-                    loteChange();
-                if (actual.procesos[proceso].terminado) 
-                {
-                    terminar();
-                    return;
-                }
-                    
-                updateProcess();
-             
-                dataGridView2.Rows.RemoveAt(0);
+                tm++;
             }
-            updateTime();
+
+            else 
+            {
+                Ejecucion.TT++;
+                if (Ejecucion.TT == 1)
+                    Ejecucion.TRespuesta = time.total - 1;
+            }
+                
+
+            if (Ejecucion == null) 
+            {
+                updateTime(Vacio: true);
+                return;
+            }
+                
+
+            if (Ejecucion.TT == Ejecucion.TME)
+            {
+                Ejecucion.Finalizacion = time.total;
+
+                addResultado(Ejecucion);
+
+                ProcessEnd();
+                
+                if (!KeyPreview) 
+                    return;
+
+                if (proceso == Listos.Count())
+                    vacio = true;
+
+                updateProcess(vacio);
+
+            }
+
+            
+
+            if (Ejecucion == null)
+                vacio = true;
+            
+                updateTime(vacio);
         }
 
-        private void loteChange()
+        private void countTime()
         {
-            proceso = 0;
-            if (lotes.Count > 0)
+            //conteo de bloqueados
+
+            for (int i = 0; i < Bloqueados.Count(); i++)
             {
-                loteActual++;
-                actual = lotes.Dequeue();
-                dgvProcessAdd();
+                Bloqueados[i].TTB++;
+                Bloqueados[i].Espera++;
+                Bloqueados[i].Retorno++;
+                dataGridView5.Rows[i].Cells[1].Value = Bloqueados[i].TTB;
+                if (Bloqueados[i].TTB == 8)
+                {
+                    proceso p = Bloqueados[i];
+                    dataGridView5.Rows.RemoveAt(i);
+                    Bloqueados.Remove(p);
+                    p.TTB = 0;
+                    Listos.Add(p);
+                    dgvProcessAdd(p);
+                    i--;
+                }
+
             }
-            else
+
+            for (int i = 0; i < Listos.Count(); i++) 
+            { 
+                Listos[i].Espera++;
+                Listos[i].Retorno++;
+            }
+
+
+        }
+
+        void CountWaitBloqueado(proceso p) 
+        {
+            
+        }
+
+
+
+
+        private void ProcessEnd()
+        {
+            next_process();
+            
+            
+            if (Nuevos.Count > 0)
+            {
+                AddProcess();
+                dgvProcessAdd(Listos.Last());
+            }
+
+            if (Listos.Count < 0 &
+               Bloqueados.Count < 0 &
+               Ejecucion == null)
                 terminar();
         }
 
         private void next_process() 
         {
-            proceso++;
-            int i = proceso;
-            do
+            if (Listos.Count > 0) 
             {
-                if (proceso == 4) proceso = 0;
-                if (!actual.procesos[proceso].terminado) return;
-                proceso++;
-            } while (proceso != i);
-            proceso = 4;
-        }
-
-        private void addResultado()
-        {
-            int i;
-            i = dataGridView3.Rows.Add();
-            dataGridView3.Rows[i].Cells[0].Value = actual.procesos[proceso].id;
-            dataGridView3.Rows[i].Cells[1].Value = actual.procesos[proceso].operacion;
-            dataGridView3.Rows[i].Cells[2].Value = actual.procesos[proceso].resultado;
-
-            i = dataGridView4.Rows.Add();
-            dataGridView4.Rows[i].Cells[0].Value = loteActual;
-            dataGridView4.Rows[i].Cells[1].Value = actual.procesos[proceso].id;
-            dataGridView4.Rows[i].Cells[2].Value = actual.procesos[proceso].operacion;
-            dataGridView4.Rows[i].Cells[3].Value = actual.procesos[proceso].TME;
-            dataGridView4.Rows[i].Cells[4].Value = actual.procesos[proceso].resultado;
-
-
-        }
-
-        private void dgvProcessAdd()
-        {
-            lblLotes.Text = lotes.Count().ToString();
-            foreach (proceso p in actual.procesos)
-            {
-                if (p.terminado == true)
-                    return;
-
-                int i = dataGridView2.Rows.Add();
-                dataGridView2.Rows[i].Cells[0].Value = p.id;
-                dataGridView2.Rows[i].Cells[1].Value = p.TME.ToString();
-                dataGridView2.Rows[i].Cells[2].Value = p.TR.ToString();
-                
+                Ejecucion = Listos.First();
+                Listos.RemoveAt(0);
+                dataGridView2.Rows.RemoveAt(0);
+                updateProcess();
+                return;
             }
 
+            Ejecucion = null;
+            updateProcess(Vacio: true);
+
+            if (Listos.Count == 0 &
+               Bloqueados.Count == 0 &
+               Ejecucion == null)
+                terminar();
         }
+
+        private void addResultado(proceso p, bool Error = false)
+        {
+            int i;
+            i = dataGridView3.Rows.Add( p.id, 
+                                        p.operacion, 
+                                        Error ? "Error" : p.resultado);
+
+            i = dataGridView4.Rows.Add( p.id, 
+                                        p.operacion, 
+                                        p.TME,
+                                        Error ? "Error" : p.resultado,
+                                        "terminado",
+                                        p.Llegada,
+                                        p.Finalizacion,
+                                        p.TT,
+                                        p.Espera,
+                                        p.TRespuesta,
+                                        p.Retorno);
+        }
+
+        private void dgvProcessAdd(proceso p)
+        {
+            dataGridView2.Rows.Add(p.id, p.TME, p.TT);
+        }
+
+        private void dgvBloquedAdd(proceso p)
+        {
+                                     //ID   TTB
+            _ = dataGridView5.Rows.Add(p.id, 0);
+
+        }
+
 
         private void terminar()
         {
@@ -270,7 +358,7 @@ namespace Practica_1
             lblTT.Text = time.total.ToString();
             lblTranscurrido.Text = time.actual.ToString();
             progressBarTotal.Value = 100;
-            progressBarProcess.Value = 100;
+            updateTime(Vacio: true);            
 
             button2.Enabled = true;
             timer1.Stop();
@@ -278,23 +366,20 @@ namespace Practica_1
             
         }
 
-        private void updateTime()
+        private void updateTime(bool Vacio = false)
         {
             lblTT.Text = time.total.ToString();
-            lblTranscurrido.Text = (actual.procesos[proceso].TME - actual.procesos[proceso].TR).ToString();
-            lblRestante.Text = (actual.procesos[proceso].TR).ToString();
-            progressBarProcess.Value = ((actual.procesos[proceso].TME - actual.procesos[proceso].TR) * 100 / actual.procesos[proceso].TME);
+            lblTranscurrido.Text = Vacio ? "" : (Ejecucion.TT).ToString();
+            lblRestante.Text = Vacio ? "" : (Ejecucion.TME - Ejecucion.TT).ToString();
+            progressBarProcess.Value = Vacio ? 0 : ((Ejecucion.TT) * 100 / Ejecucion.TME);
             progressBarTotal.Value = ((time.total) * 100 / tm);
         }
 
-        private void updateProcess()
+        private void updateProcess(bool Vacio = false)
         {
-            proceso temp = actual.procesos[proceso];
-            float op;
-
-            lblID.Text = temp.id.ToString();
-            lblOperacion.Text = temp.operacion;
-            lblTME.Text = temp.TME.ToString();
+            lblID.Text = Vacio ? "" : Ejecucion.id.ToString();
+            lblOperacion.Text = Vacio ? "" : Ejecucion.operacion;
+            lblTME.Text = Vacio ? "" : Ejecucion.TME.ToString();
 
         }
 
@@ -356,8 +441,8 @@ namespace Practica_1
         {
             switch (e.KeyData) 
             {
-                case Keys.P: timer1.Enabled = false;break;
-                case Keys.C: timer1.Enabled = true; break;
+                case Keys.P: timer1.Enabled = false;                    break;
+                case Keys.C: timer1.Enabled = true;                     break;
                 case Keys.E: if (timer1.Enabled) processError();        break;
                 case Keys.I: if (timer1.Enabled) processInterruption(); break;
             }
@@ -365,49 +450,41 @@ namespace Practica_1
 
         private void processInterruption()
         {
-            int i = proceso;
-            next_process();
-            updateProcess();
-            updateTime();
-            if (i != proceso)
-            {
-                dataGridView2.Rows.RemoveAt(0);
-                int row = dataGridView2.Rows.Add();
-                dataGridView2.Rows[row].Cells[0].Value = actual.procesos[i].id;
-                dataGridView2.Rows[row].Cells[1].Value = actual.procesos[i].TME.ToString();
-                dataGridView2.Rows[row].Cells[2].Value = actual.procesos[i].TR.ToString();
+            bool vacio;
 
-            }
+            if (Ejecucion == null)
+                return;
+
+            Bloqueados.Add(Ejecucion);
+            dgvBloquedAdd(Ejecucion);
+            
+            Ejecucion = null;
+
+            next_process();
+            vacio = Ejecucion == null;
+                
+            updateProcess(vacio);
+            updateTime(vacio);
+            
         }
 
         private void processError()
         {
+            if (Ejecucion == null)
+                return;
+
             int i;
-            actual.procesos[proceso].terminado = true;
-            tm -= actual.procesos[proceso].TR;
-            i = dataGridView3.Rows.Add();
-            dataGridView3.Rows[i].Cells[0].Value = actual.procesos[proceso].id;
-            dataGridView3.Rows[i].Cells[1].Value = actual.procesos[proceso].operacion;
-            dataGridView3.Rows[i].Cells[2].Value = "Error";
+            tm -= (Ejecucion.TME - Ejecucion.TT);
 
-            i = dataGridView4.Rows.Add();
-            dataGridView4.Rows[i].Cells[0].Value = loteActual;
-            dataGridView4.Rows[i].Cells[1].Value = actual.procesos[proceso].id;
-            dataGridView4.Rows[i].Cells[2].Value = actual.procesos[proceso].operacion;
-            dataGridView4.Rows[i].Cells[3].Value = actual.procesos[proceso].TME;
-            dataGridView4.Rows[i].Cells[4].Value = "Error";
+            Ejecucion.Finalizacion = time.total;
+            addResultado(Ejecucion, Error: true);
             
-
-            next_process();
-            if (proceso == 4)
-                loteChange();
+            ProcessEnd();
 
             if (!KeyPreview)
                 return;
 
-            dataGridView2.Rows.RemoveAt(0);
-            updateProcess();
-            updateTime();
+            updateTime( Ejecucion == null );
             
         }
 

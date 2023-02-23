@@ -53,7 +53,13 @@
             this.ColResOp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColResRes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.dataGridView5 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BTT = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.colQueryNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColQueryTME = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TR = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblRestante = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -65,21 +71,22 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lblID = new System.Windows.Forms.Label();
             this.ttlID = new System.Windows.Forms.Label();
-            this.lblNombre = new System.Windows.Forms.Label();
-            this.ttlNombre = new System.Windows.Forms.Label();
             this.progressBarTotal = new System.Windows.Forms.ProgressBar();
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
             this.panelResultados = new System.Windows.Forms.Panel();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
-            this.ColLote = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColOperacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColTME = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColResultado = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.colQueryNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColQueryTME = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TR = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Estado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TiempoLlegada = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TFin = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TSer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TEsp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TRet = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tres = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buttonsPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
             this.panelProcesos.SuspendLayout();
@@ -90,6 +97,7 @@
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.panel2.SuspendLayout();
             this.panelResultados.SuspendLayout();
@@ -267,9 +275,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 338);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 15);
+            this.label1.Size = new System.Drawing.Size(100, 15);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Lotes Faltantes: ";
+            this.label1.Text = "Procesos Nuevos ";
             // 
             // lblTT
             // 
@@ -340,11 +348,44 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.dataGridView5);
             this.panel3.Controls.Add(this.dataGridView2);
             this.panel3.Location = new System.Drawing.Point(0, 6);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(263, 316);
             this.panel3.TabIndex = 2;
+            // 
+            // dataGridView5
+            // 
+            this.dataGridView5.AllowUserToAddRows = false;
+            this.dataGridView5.AllowUserToDeleteRows = false;
+            this.dataGridView5.AllowUserToResizeColumns = false;
+            this.dataGridView5.AllowUserToResizeRows = false;
+            this.dataGridView5.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView5.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.BTT});
+            this.dataGridView5.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dataGridView5.Location = new System.Drawing.Point(0, 176);
+            this.dataGridView5.Name = "dataGridView5";
+            this.dataGridView5.ReadOnly = true;
+            this.dataGridView5.RowHeadersVisible = false;
+            this.dataGridView5.RowTemplate.Height = 25;
+            this.dataGridView5.Size = new System.Drawing.Size(263, 140);
+            this.dataGridView5.TabIndex = 1;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // BTT
+            // 
+            this.BTT.HeaderText = "BTT";
+            this.BTT.Name = "BTT";
+            this.BTT.ReadOnly = true;
             // 
             // dataGridView2
             // 
@@ -366,6 +407,25 @@
             this.dataGridView2.Size = new System.Drawing.Size(263, 316);
             this.dataGridView2.TabIndex = 0;
             // 
+            // colQueryNombre
+            // 
+            this.colQueryNombre.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colQueryNombre.HeaderText = "ID";
+            this.colQueryNombre.Name = "colQueryNombre";
+            this.colQueryNombre.ReadOnly = true;
+            // 
+            // ColQueryTME
+            // 
+            this.ColQueryTME.HeaderText = "TME";
+            this.ColQueryTME.Name = "ColQueryTME";
+            this.ColQueryTME.ReadOnly = true;
+            // 
+            // TR
+            // 
+            this.TR.HeaderText = "TR";
+            this.TR.Name = "TR";
+            this.TR.ReadOnly = true;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.lblRestante);
@@ -378,8 +438,6 @@
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.lblID);
             this.panel2.Controls.Add(this.ttlID);
-            this.panel2.Controls.Add(this.lblNombre);
-            this.panel2.Controls.Add(this.ttlNombre);
             this.panel2.Location = new System.Drawing.Point(263, 6);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(266, 218);
@@ -388,7 +446,7 @@
             // lblRestante
             // 
             this.lblRestante.AutoSize = true;
-            this.lblRestante.Location = new System.Drawing.Point(116, 176);
+            this.lblRestante.Location = new System.Drawing.Point(116, 136);
             this.lblRestante.Name = "lblRestante";
             this.lblRestante.Size = new System.Drawing.Size(49, 15);
             this.lblRestante.TabIndex = 15;
@@ -397,7 +455,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(17, 176);
+            this.label8.Location = new System.Drawing.Point(17, 132);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(55, 15);
             this.label8.TabIndex = 14;
@@ -406,7 +464,7 @@
             // lblTranscurrido
             // 
             this.lblTranscurrido.AutoSize = true;
-            this.lblTranscurrido.Location = new System.Drawing.Point(116, 142);
+            this.lblTranscurrido.Location = new System.Drawing.Point(116, 102);
             this.lblTranscurrido.Name = "lblTranscurrido";
             this.lblTranscurrido.Size = new System.Drawing.Size(49, 15);
             this.lblTranscurrido.TabIndex = 13;
@@ -415,7 +473,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 142);
+            this.label6.Location = new System.Drawing.Point(9, 98);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(75, 15);
             this.label6.TabIndex = 12;
@@ -424,7 +482,7 @@
             // lblTME
             // 
             this.lblTME.AutoSize = true;
-            this.lblTME.Location = new System.Drawing.Point(116, 110);
+            this.lblTME.Location = new System.Drawing.Point(116, 71);
             this.lblTME.Name = "lblTME";
             this.lblTME.Size = new System.Drawing.Size(49, 15);
             this.lblTME.TabIndex = 11;
@@ -433,7 +491,7 @@
             // lblOperacion
             // 
             this.lblOperacion.AutoSize = true;
-            this.lblOperacion.Location = new System.Drawing.Point(116, 78);
+            this.lblOperacion.Location = new System.Drawing.Point(116, 41);
             this.lblOperacion.Name = "lblOperacion";
             this.lblOperacion.Size = new System.Drawing.Size(49, 15);
             this.lblOperacion.TabIndex = 10;
@@ -442,7 +500,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(32, 110);
+            this.label3.Location = new System.Drawing.Point(32, 71);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(33, 15);
             this.label3.TabIndex = 9;
@@ -451,7 +509,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 78);
+            this.label2.Location = new System.Drawing.Point(17, 41);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 15);
             this.label2.TabIndex = 8;
@@ -460,7 +518,7 @@
             // lblID
             // 
             this.lblID.AutoSize = true;
-            this.lblID.Location = new System.Drawing.Point(116, 46);
+            this.lblID.Location = new System.Drawing.Point(116, 17);
             this.lblID.Name = "lblID";
             this.lblID.Size = new System.Drawing.Size(49, 15);
             this.lblID.TabIndex = 7;
@@ -469,31 +527,11 @@
             // ttlID
             // 
             this.ttlID.AutoSize = true;
-            this.ttlID.Location = new System.Drawing.Point(40, 46);
+            this.ttlID.Location = new System.Drawing.Point(40, 18);
             this.ttlID.Name = "ttlID";
             this.ttlID.Size = new System.Drawing.Size(21, 15);
             this.ttlID.TabIndex = 6;
             this.ttlID.Text = "ID:";
-            // 
-            // lblNombre
-            // 
-            this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(116, 14);
-            this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(49, 15);
-            this.lblNombre.TabIndex = 5;
-            this.lblNombre.Text = "######";
-            this.lblNombre.Visible = false;
-            // 
-            // ttlNombre
-            // 
-            this.ttlNombre.AutoSize = true;
-            this.ttlNombre.Location = new System.Drawing.Point(23, 14);
-            this.ttlNombre.Name = "ttlNombre";
-            this.ttlNombre.Size = new System.Drawing.Size(54, 15);
-            this.ttlNombre.TabIndex = 4;
-            this.ttlNombre.Text = "Nombre:";
-            this.ttlNombre.Visible = false;
             // 
             // progressBarTotal
             // 
@@ -528,11 +566,17 @@
             this.dataGridView4.AllowUserToResizeRows = false;
             this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView4.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColLote,
             this.ColId,
             this.ColOperacion,
             this.ColTME,
-            this.ColResultado});
+            this.ColResultado,
+            this.Estado,
+            this.TiempoLlegada,
+            this.TFin,
+            this.TSer,
+            this.TEsp,
+            this.TRet,
+            this.Tres});
             this.dataGridView4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView4.Location = new System.Drawing.Point(0, 0);
             this.dataGridView4.Name = "dataGridView4";
@@ -543,12 +587,10 @@
             this.dataGridView4.TabIndex = 3;
             this.dataGridView4.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView4_CellContentClick);
             // 
-            // ColLote
+            // timer1
             // 
-            this.ColLote.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColLote.HeaderText = "Lote";
-            this.ColLote.Name = "ColLote";
-            this.ColLote.ReadOnly = true;
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // ColId
             // 
@@ -578,29 +620,54 @@
             this.ColResultado.Name = "ColResultado";
             this.ColResultado.ReadOnly = true;
             // 
-            // timer1
+            // Estado
             // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.Estado.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Estado.HeaderText = "Estado";
+            this.Estado.Name = "Estado";
+            this.Estado.ReadOnly = true;
             // 
-            // colQueryNombre
+            // TiempoLlegada
             // 
-            this.colQueryNombre.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colQueryNombre.HeaderText = "ID";
-            this.colQueryNombre.Name = "colQueryNombre";
-            this.colQueryNombre.ReadOnly = true;
+            this.TiempoLlegada.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TiempoLlegada.HeaderText = "T LL";
+            this.TiempoLlegada.Name = "TiempoLlegada";
+            this.TiempoLlegada.ReadOnly = true;
             // 
-            // ColQueryTME
+            // TFin
             // 
-            this.ColQueryTME.HeaderText = "TME";
-            this.ColQueryTME.Name = "ColQueryTME";
-            this.ColQueryTME.ReadOnly = true;
+            this.TFin.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TFin.HeaderText = "T F";
+            this.TFin.Name = "TFin";
+            this.TFin.ReadOnly = true;
             // 
-            // TR
+            // TSer
             // 
-            this.TR.HeaderText = "TR";
-            this.TR.Name = "TR";
-            this.TR.ReadOnly = true;
+            this.TSer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TSer.HeaderText = "T S";
+            this.TSer.Name = "TSer";
+            this.TSer.ReadOnly = true;
+            // 
+            // TEsp
+            // 
+            this.TEsp.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TEsp.HeaderText = "T E";
+            this.TEsp.Name = "TEsp";
+            this.TEsp.ReadOnly = true;
+            // 
+            // TRet
+            // 
+            this.TRet.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TRet.HeaderText = "T Res";
+            this.TRet.Name = "TRet";
+            this.TRet.ReadOnly = true;
+            // 
+            // Tres
+            // 
+            this.Tres.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Tres.HeaderText = "T ret";
+            this.Tres.Name = "Tres";
+            this.Tres.ReadOnly = true;
             // 
             // Form1
             // 
@@ -626,6 +693,7 @@
             this.panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -671,8 +739,6 @@
         private Label label2;
         private Label lblID;
         private Label ttlID;
-        private Label lblNombre;
-        private Label ttlNombre;
         private System.Windows.Forms.Timer timer1;
         private Label lblTT;
         private Label lblLotes;
@@ -681,13 +747,22 @@
         private DataGridViewTextBoxColumn ID;
         private DataGridViewTextBoxColumn Operacion;
         private DataGridViewTextBoxColumn TME;
-        private DataGridViewTextBoxColumn ColLote;
+        private DataGridViewTextBoxColumn colQueryNombre;
+        private DataGridViewTextBoxColumn ColQueryTME;
+        private DataGridViewTextBoxColumn TR;
+        private DataGridView dataGridView5;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn BTT;
         private DataGridViewTextBoxColumn ColId;
         private DataGridViewTextBoxColumn ColOperacion;
         private DataGridViewTextBoxColumn ColTME;
         private DataGridViewTextBoxColumn ColResultado;
-        private DataGridViewTextBoxColumn colQueryNombre;
-        private DataGridViewTextBoxColumn ColQueryTME;
-        private DataGridViewTextBoxColumn TR;
+        private DataGridViewTextBoxColumn Estado;
+        private DataGridViewTextBoxColumn TiempoLlegada;
+        private DataGridViewTextBoxColumn TFin;
+        private DataGridViewTextBoxColumn TSer;
+        private DataGridViewTextBoxColumn TEsp;
+        private DataGridViewTextBoxColumn TRet;
+        private DataGridViewTextBoxColumn Tres;
     }
 }

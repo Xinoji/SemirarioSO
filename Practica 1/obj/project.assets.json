@@ -13,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\DELL\\Desktop\\´SSO Programa\\SemirarioSO\\Practica 1\\Practica 1.csproj",
-      "projectName": "Practica 1",
-      "projectPath": "C:\\Users\\DELL\\Desktop\\´SSO Programa\\SemirarioSO\\Practica 1\\Practica 1.csproj",
+      "projectUniqueName": "C:\\Users\\DELL\\Desktop\\´SSO Programa\\SemirarioSO\\Practica 1\\Simulador.csproj",
+      "projectName": "Simulador",
+      "projectPath": "C:\\Users\\DELL\\Desktop\\´SSO Programa\\SemirarioSO\\Practica 1\\Simulador.csproj",
       "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\DELL\\Desktop\\´SSO Programa\\SemirarioSO\\Practica 1\\obj\\",
       "projectStyle": "PackageReference",

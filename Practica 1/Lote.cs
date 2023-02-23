@@ -10,15 +10,17 @@ namespace Practica_1
     {
         public  int id { get; set; }
         public int TME { get; set; }
-        public int TR { get; set; }
+        public int TT { get; set; }
+        public int TTB { get; set; }
+        public int Llegada { get; set; }
+        public int Espera { get; set; }//Retorno - Ejecucion
+        public int Retorno { get; set; } //Finalizacion - Llegada | Tiempo Ejecion + Tiempo de Espera
+       
+        public int Finalizacion { get; set; }
+        public int TRespuesta { get; set; }
         public string operacion { get; set; }
         public float resultado { get; set; }
-        public bool terminado { get; set; }
 
-        public proceso() 
-        {
-            terminado = true;
-        }
     }
 
     public struct lote
