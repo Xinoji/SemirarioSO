@@ -14,6 +14,7 @@ namespace Practica_1
         int proceso;
         int loteActual;
         int tm;
+        List<int> id;
         List<proceso> Listos;
         proceso Ejecucion;
         List<proceso> Bloqueados;
@@ -26,6 +27,7 @@ namespace Practica_1
             Nuevos = new Queue<proceso>();
             Bloqueados = new List<proceso>();
             Listos = new List<proceso>();
+            id = new List<int>();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -33,141 +35,128 @@ namespace Practica_1
 
         }
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+    private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+    {
+        DataGridViewRowCollection Rows = dataGridView1.Rows;
+        int row;
+        Random nums = new Random();
+        char op;
+
+        while (numericUpDown1.Value > Rows.Count)
         {
-            DataGridViewRowCollection Rows = dataGridView1.Rows;
-            int row;
-            Random nums = new Random();
-            char op;
-            
-            while (numericUpDown1.Value > Rows.Count)
+            switch (nums.Next(0, 5))
             {
-                switch (nums.Next(0, 5))
-                {
-                    case 1: op = '+'; break;
-                    case 2: op = '-'; break;
-                    case 3: op = '*'; break;
-                    case 4: op = '/'; break;
-                    case 5: op = '%'; break;
-                    default:op = '+'; break;
-                }
-
-                row = Rows.Add();
-                Rows[row].Cells[0].Value = row;
-                Rows[row].Cells[1].Value = $"{nums.Next(0, 100)} {op} {nums.Next(0, 100)}";
-                Rows[row].Cells[2].Value = nums.Next(5, 16);
+                case 1: op = '+'; break;
+                case 2: op = '-'; break;
+                case 3: op = '*'; break;
+                case 4: op = '/'; break;
+                case 5: op = '%'; break;
+                default: op = '+'; break;
             }
 
-            while (numericUpDown1.Value < dataGridView1.Rows.Count)
-            {
-                Rows.RemoveAt(Rows.Count - 1);
-            }
+            row = Rows.Add();
+            Rows[row].Cells[0].Value = row;
+            Rows[row].Cells[1].Value = $"{nums.Next(0, 100)} {op} {nums.Next(0, 100)}";
+            Rows[row].Cells[2].Value = nums.Next(5, 16);
+        }
+
+        while (numericUpDown1.Value < dataGridView1.Rows.Count)
+        {
+            Rows.RemoveAt(Rows.Count - 1);
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+    }
+
+    void createProcess(DataGridViewRow row)
+    {
+        proceso temp;
+
+        temp = new proceso();
+        var cells = row.Cells;
+
+        try
         {
-            if (createLotes() | (Nuevos.Count < 0))
-            {
-                return;
-            }
-            panelProcesos.Visible = !panelProcesos.Visible;
+            temp.TME = (int)cells[2].Value;
 
-            time = (0, 0);
+            if (temp.TME < 1)
+                throw new Exception();
 
-            AddProcess();
-            AddProcess();
-            AddProcess();
-            AddProcess();
+            if (id.Contains((int)cells[0].Value))
+                throw new Exception();
 
-            foreach (proceso p in Listos)
-                dgvProcessAdd(p);
+            temp.operacion = (string)cells[1].Value;
 
-            next_process();
+            temp.resultado = getOP(temp.operacion);
 
-            
-            updateProcess();
+            temp.id = (int)cells[0].Value;
+            tm += temp.TME;
+            id.Add((int)cells[0].Value);
+            Nuevos.Enqueue(temp);
+        }
+        catch (Exception)
+        {
+            reProcess(row);
+            createProcess(row);
+        }
+    }
+   
+        
+    private void reProcess(DataGridViewRow row)
+    {
+        Random nums = new Random();
+        char op;
 
-            lblTT.Text = "0";
-            lblTranscurrido.Text = "0";
-            lblRestante.Text = (Ejecucion.TME - 0).ToString();
-            
-            button1.Enabled = false;
-            timer1.Start();
-            this.KeyPreview = true;
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-
+        switch (nums.Next(0, 5))
+        {
+            case 1: op = '+'; break;
+            case 2: op = '-'; break;
+            case 3: op = '*'; break;
+            case 4: op = '/'; break;
+            case 5: op = '%'; break;
+            default: op = '+'; break;
         }
 
-        private bool createLotes()
-        {
-            List<int> id = new List<int>();
-            proceso temp;
+        row.Cells[1].Value = $"{nums.Next(0, 100)} {op} {nums.Next(0, 100)}";
+        row.Cells[2].Value = nums.Next(5, 16);
+    }
+    
+
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+        foreach (DataGridViewRow row in dataGridView1.Rows)
+            createProcess(row);
+
+        if (Nuevos.Count == 0)
+            return;
             
-            foreach (DataGridViewRow rows in dataGridView1.Rows)
-            {
-                temp = new proceso();
-                bool valid = true;
-                var row = rows.Cells;
+        panelProcesos.Visible = !panelProcesos.Visible;
 
-                try
-                {
-                    temp.TME = (int)row[2].Value;
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show($"Formato  TME: {dataGridView1.Rows.IndexOf(rows)}",
-                        "Error TME", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return true;
-                }
+        time = (0, 0);
 
-                if (temp.TME < 1)
-                {
-                    MessageBox.Show($"Tiempo invalido en: {dataGridView1.Rows.IndexOf(rows)}",
-                        "Tiempo invalid", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return true;
-                }
-                try
-                {
-                    if (id.Contains((int)row[0].Value))
-                    {
-                        MessageBox.Show($"ID repetido: {row[0].Value} en el proceso numero: {dataGridView1.Rows.IndexOf(rows)}",
-                                        "ID repetido", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return true;
-                    }
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show($"Formato ID : {dataGridView1.Rows.IndexOf(rows)}",
-                        "Error TME", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return true;
-                }
-                                            
-                temp.operacion = (string)row[1].Value;
-                try
-                {
-                    (temp.resultado, valid) = getOP(temp.operacion);
-                }
-                catch (Exception)
-                {
-                    valid = false;
-                }
+        AddProcess();
+        AddProcess();
+        AddProcess();
+        AddProcess();
+            
+        foreach (proceso p in Listos)
+            dgvProcessAdd(p);
 
-                if (!valid)
-                {
-                    MessageBox.Show($"Operacion erronea en el proceso numero: {dataGridView1.Rows.IndexOf(rows)}",
-                        "ID repetido", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return true;
-                }
+        next_process();
+            
+        updateProcess();
 
-                temp.id = (int)row[0].Value;
-                tm += temp.TME;
-                id.Add((int)row[0].Value);
-                Nuevos.Enqueue(temp);
+        lblTT.Text = "0";
+        lblTranscurrido.Text = "0";
+        lblRestante.Text = (Ejecucion.TME - 0).ToString();
+            
+        button1.Enabled = false;
+        timer1.Start();
+        this.KeyPreview = true;
+        this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
 
-            }
-            return false;
-        }
+    }
 
         private void AddProcess() 
         {
@@ -178,6 +167,7 @@ namespace Practica_1
                 p = Nuevos.Dequeue();
                 p.Llegada = time.total;
                 Listos.Add(p);
+                lblLotes.Text = Nuevos.Count().ToString();
                 //agregar tiempo de llegada
             }
         }
@@ -264,7 +254,7 @@ namespace Practica_1
                 }
 
             }
-
+         
             for (int i = 0; i < Listos.Count(); i++) 
             { 
                 Listos[i].Espera++;
@@ -273,14 +263,6 @@ namespace Practica_1
 
 
         }
-
-        void CountWaitBloqueado(proceso p) 
-        {
-            
-        }
-
-
-
 
         private void ProcessEnd()
         {
@@ -326,17 +308,20 @@ namespace Practica_1
                                         p.operacion, 
                                         Error ? "Error" : p.resultado);
 
-            i = dataGridView4.Rows.Add( p.id, 
-                                        p.operacion, 
-                                        p.TME,
-                                        Error ? "Error" : p.resultado,
-                                        "terminado",
-                                        p.Llegada,
-                                        p.Finalizacion,
-                                        p.TT,
-                                        p.Espera,
-                                        p.TRespuesta,
-                                        p.Retorno);
+            dataGridView4.Rows.Add(p.id,
+                                            p.operacion,
+                                            p.TME,
+                                            Error ? "Error" : p.resultado,
+                                            "terminado",
+                                            p.Llegada,
+                                            p.Finalizacion,
+                                            p.TT,
+                                            p.Espera,
+                                            p.TRespuesta,
+                                            p.Retorno);
+                
+                
+                
         }
 
         private void dgvProcessAdd(proceso p)
@@ -363,6 +348,8 @@ namespace Practica_1
             button2.Enabled = true;
             timer1.Stop();
             MessageBox.Show($"Tiempo total de ejecucion: {time.total}", "Tiempo total", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            dataGridView4.Sort(ColId,ListSortDirection.Ascending);
             
         }
 
@@ -383,33 +370,33 @@ namespace Practica_1
 
         }
 
-        private (float, bool) getOP(string operacion)
+        private float getOP(string operacion)
         {
             string[] nums = new string[2];
             nums[0] = "error";
             if (operacion.Contains('*')) 
             { 
                 nums = (string[])operacion.Split('*');
-                return (float.Parse(nums[0]) * float.Parse(nums[1]), true);
+                return float.Parse(nums[0]) * float.Parse(nums[1]);
             }
 
             if (operacion.Contains('%'))
             {
                 nums = (string[])operacion.Split('%');
-                return (float.Parse(nums[0]) % float.Parse(nums[1]), true);
+                return float.Parse(nums[0]) % float.Parse(nums[1]);
             }
 
             if (operacion.Contains('+'))
             { 
                 nums = (string[])operacion.Split('+');
-                return (float.Parse(nums[0]) + float.Parse(nums[1]), true);
+                return (float.Parse(nums[0]) + float.Parse(nums[1]));
 
             }
 
             if (operacion.Contains('-'))
             { 
                 nums = (string[])operacion.Split('-');
-                return (float.Parse(nums[0]) - float.Parse(nums[1]) , true);
+                return (float.Parse(nums[0]) - float.Parse(nums[1]));
 
             }
 
@@ -418,13 +405,13 @@ namespace Practica_1
                 nums = (string[])operacion.Split('/');
                 if (float.Parse(nums[1]) == 0)
                 {
-                    return (0, false);
+                    return (0);
                 }
-                return (float.Parse(nums[0]) / float.Parse(nums[1]), true);
+                return (float.Parse(nums[0]) / float.Parse(nums[1]));
 
             }
 
-            return (0, false);
+            return (0);
         }
 
         private void dataGridView4_CellContentClick(object sender, DataGridViewCellEventArgs e)

@@ -743,7 +743,7 @@
         private Label lblTT;
         private Label lblLotes;
         private Label label1;
-        private Label Key;
+        private Label  Key;
         private DataGridViewTextBoxColumn ID;
         private DataGridViewTextBoxColumn Operacion;
         private DataGridViewTextBoxColumn TME;
