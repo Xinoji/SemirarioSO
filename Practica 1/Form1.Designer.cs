@@ -75,19 +75,19 @@
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
             this.panelResultados = new System.Windows.Forms.Panel();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColOperacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColTME = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColResultado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Estado = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColTRB = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColExtra = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColOperacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColResultado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TiempoLlegada = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TFin = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TSer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TEsp = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TRet = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tres = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.TEsp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TSer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColTRestante = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TRet = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buttonsPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
             this.panelProcesos.SuspendLayout();
@@ -568,17 +568,17 @@
             this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView4.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColId,
-            this.ColOperacion,
-            this.ColTME,
-            this.ColResultado,
             this.Estado,
-            this.ColTRB,
+            this.ColExtra,
+            this.ColOperacion,
+            this.ColResultado,
             this.TiempoLlegada,
             this.TFin,
-            this.TSer,
+            this.Tres,
             this.TEsp,
-            this.TRet,
-            this.Tres});
+            this.TSer,
+            this.ColTRestante,
+            this.TRet});
             this.dataGridView4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView4.Location = new System.Drawing.Point(0, 0);
             this.dataGridView4.Name = "dataGridView4";
@@ -589,33 +589,17 @@
             this.dataGridView4.TabIndex = 3;
             this.dataGridView4.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView4_CellContentClick);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // ColId
             // 
             this.ColId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ColId.HeaderText = "ID";
             this.ColId.Name = "ColId";
             this.ColId.ReadOnly = true;
-            // 
-            // ColOperacion
-            // 
-            this.ColOperacion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColOperacion.HeaderText = "Operacion";
-            this.ColOperacion.Name = "ColOperacion";
-            this.ColOperacion.ReadOnly = true;
-            // 
-            // ColTME
-            // 
-            this.ColTME.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColTME.HeaderText = "TME";
-            this.ColTME.Name = "ColTME";
-            this.ColTME.ReadOnly = true;
-            // 
-            // ColResultado
-            // 
-            this.ColResultado.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColResultado.HeaderText = "Resultado";
-            this.ColResultado.Name = "ColResultado";
-            this.ColResultado.ReadOnly = true;
             // 
             // Estado
             // 
@@ -624,60 +608,75 @@
             this.Estado.Name = "Estado";
             this.Estado.ReadOnly = true;
             // 
-            // ColTRB
+            // ColExtra
             // 
-            this.ColTRB.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColTRB.HeaderText = "Term/TR B";
-            this.ColTRB.Name = "ColTRB";
-            this.ColTRB.ReadOnly = true;
-            this.ColTRB.Visible = false;
+            this.ColExtra.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColExtra.HeaderText = "";
+            this.ColExtra.Name = "ColExtra";
+            this.ColExtra.ReadOnly = true;
+            // 
+            // ColOperacion
+            // 
+            this.ColOperacion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColOperacion.HeaderText = "Operacion";
+            this.ColOperacion.Name = "ColOperacion";
+            this.ColOperacion.ReadOnly = true;
+            // 
+            // ColResultado
+            // 
+            this.ColResultado.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColResultado.HeaderText = "Resultado";
+            this.ColResultado.Name = "ColResultado";
+            this.ColResultado.ReadOnly = true;
             // 
             // TiempoLlegada
             // 
             this.TiempoLlegada.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.TiempoLlegada.HeaderText = "T LL";
+            this.TiempoLlegada.HeaderText = "Tiempo LLegada";
             this.TiempoLlegada.Name = "TiempoLlegada";
             this.TiempoLlegada.ReadOnly = true;
             // 
             // TFin
             // 
             this.TFin.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.TFin.HeaderText = "T F";
+            this.TFin.HeaderText = "T Finalizacion";
             this.TFin.Name = "TFin";
             this.TFin.ReadOnly = true;
-            // 
-            // TSer
-            // 
-            this.TSer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.TSer.HeaderText = "T S";
-            this.TSer.Name = "TSer";
-            this.TSer.ReadOnly = true;
-            // 
-            // TEsp
-            // 
-            this.TEsp.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.TEsp.HeaderText = "T E";
-            this.TEsp.Name = "TEsp";
-            this.TEsp.ReadOnly = true;
-            // 
-            // TRet
-            // 
-            this.TRet.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.TRet.HeaderText = "T Res";
-            this.TRet.Name = "TRet";
-            this.TRet.ReadOnly = true;
             // 
             // Tres
             // 
             this.Tres.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Tres.HeaderText = "T ret";
+            this.Tres.HeaderText = "T retorno";
             this.Tres.Name = "Tres";
             this.Tres.ReadOnly = true;
             // 
-            // timer1
+            // TEsp
             // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.TEsp.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TEsp.HeaderText = "T Espera";
+            this.TEsp.Name = "TEsp";
+            this.TEsp.ReadOnly = true;
+            // 
+            // TSer
+            // 
+            this.TSer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TSer.HeaderText = "T Servicio";
+            this.TSer.Name = "TSer";
+            this.TSer.ReadOnly = true;
+            // 
+            // ColTRestante
+            // 
+            this.ColTRestante.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColTRestante.HeaderText = "T Restante";
+            this.ColTRestante.Name = "ColTRestante";
+            this.ColTRestante.ReadOnly = true;
+            // 
+            // TRet
+            // 
+            this.TRet.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TRet.HeaderText = "T Respuesta";
+            this.TRet.Name = "TRet";
+            this.TRet.ReadOnly = true;
             // 
             // Form1
             // 
@@ -764,16 +763,16 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn BTT;
         private DataGridViewTextBoxColumn ColId;
-        private DataGridViewTextBoxColumn ColOperacion;
-        private DataGridViewTextBoxColumn ColTME;
-        private DataGridViewTextBoxColumn ColResultado;
         private DataGridViewTextBoxColumn Estado;
-        private DataGridViewTextBoxColumn ColTRB;
+        private DataGridViewTextBoxColumn ColExtra;
+        private DataGridViewTextBoxColumn ColOperacion;
+        private DataGridViewTextBoxColumn ColResultado;
         private DataGridViewTextBoxColumn TiempoLlegada;
         private DataGridViewTextBoxColumn TFin;
-        private DataGridViewTextBoxColumn TSer;
-        private DataGridViewTextBoxColumn TEsp;
-        private DataGridViewTextBoxColumn TRet;
         private DataGridViewTextBoxColumn Tres;
+        private DataGridViewTextBoxColumn TEsp;
+        private DataGridViewTextBoxColumn TSer;
+        private DataGridViewTextBoxColumn ColTRestante;
+        private DataGridViewTextBoxColumn TRet;
     }
 }

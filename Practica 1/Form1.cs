@@ -89,6 +89,7 @@ namespace Practica_1
                 tm += temp.TME;
                 id.Add((int)cells[0].Value);
                 Nuevos.Enqueue(temp);
+                AddToBCP(temp);
             }
             catch (Exception)
             {
@@ -162,6 +163,7 @@ namespace Practica_1
                     p.Llegada = time.total;
                     Listos.Add(p);
                     lblLotes.Text = Nuevos.Count().ToString();
+                    AddToBCP(p,1);
                     //agregar tiempo de llegada
                 }
             }
@@ -175,23 +177,7 @@ namespace Practica_1
         private void timer1_Tick(object sender, EventArgs e)
         {
             bool vacio = false;
-
-            time.total++;
             countTime();
-
-            if (Ejecucion == null) 
-            {
-                next_process();
-                tm++;
-            }
-
-            else 
-            {
-                Ejecucion.TT++;
-                if (Ejecucion.TT == 1)
-                    Ejecucion.TRespuesta = time.total - 1;
-            }
-                
 
             if (Ejecucion == null) 
             {
@@ -229,6 +215,14 @@ namespace Practica_1
         private void countTime()
         {
             //conteo de bloqueados
+            time.total++;
+
+            for (int i = 0; i < Listos.Count(); i++)
+            {
+                Listos[i].Espera++;
+                Listos[i].Retorno++;
+                dataGridView4.Rows[Listos[i].id].Cells[8].Value = Listos[i].Espera;
+            }
 
             for (int i = 0; i < Bloqueados.Count(); i++)
             {
@@ -236,6 +230,9 @@ namespace Practica_1
                 Bloqueados[i].Espera++;
                 Bloqueados[i].Retorno++;
                 dataGridView5.Rows[i].Cells[1].Value = Bloqueados[i].TTB;
+                dataGridView4.Rows[Bloqueados[i].id].Cells[2].Value = 8 - Bloqueados[i].TTB;
+                dataGridView4.Rows[Bloqueados[i].id].Cells[8].Value = Bloqueados[i].Espera;
+
                 if (Bloqueados[i].TTB == 8)
                 {
                     proceso p = Bloqueados[i];
@@ -245,34 +242,35 @@ namespace Practica_1
                     Listos.Add(p);
                     dgvProcessAdd(p);
                     i--;
+                    AddToBCP(p,1);
                 }
 
             }
-         
-            for (int i = 0; i < Listos.Count(); i++) 
-            { 
-                Listos[i].Espera++;
-                Listos[i].Retorno++;
+
+            if (Ejecucion == null)
+            {
+                next_process();
+                tm++;
+                return;
             }
-
-
+            Ejecucion.TT++;
+            dataGridView4.Rows[Ejecucion.id].Cells[9].Value = Ejecucion.TT;
+            Ejecucion.Retorno++;
+            if (Ejecucion.TT == 1)
+                Ejecucion.TRespuesta = time.total - 1;
+            
         }
 
         private void ProcessEnd()
         {
-            next_process();
-            
+            next_process();   
             
             if (Nuevos.Count > 0)
             {
                 AddProcess();
                 dgvProcessAdd(Listos.Last());
             }
-
-            if (Listos.Count < 0 &
-                Bloqueados.Count < 0 &
-                Ejecucion == null)
-                terminar();
+            
         }
 
         private void next_process() 
@@ -282,6 +280,7 @@ namespace Practica_1
                 Ejecucion = Listos.First();
                 Listos.RemoveAt(0);
                 dataGridView2.Rows.RemoveAt(0);
+                AddToBCP(Ejecucion,2);
                 updateProcess();
                 return;
             }
@@ -289,9 +288,7 @@ namespace Practica_1
             Ejecucion = null;
             updateProcess(Vacio: true);
 
-            if (Listos.Count == 0 &
-                Bloqueados.Count == 0 &
-                Ejecucion == null)
+            if (ProcessInMemory() == 0)
                 terminar();
         }
 
@@ -302,32 +299,114 @@ namespace Practica_1
                                         p.operacion, 
                                         Error ? "Error" : p.resultado);
 
-            dataGridView4.Rows.Add(p.id,
-                                               p.operacion,
-                                               p.TME,
-                                               Error ? "Error" : p.resultado,
-                                               "terminado",
-                                               null,
-                                               p.Llegada,
-                                               p.Finalizacion,
-                                               p.TT,
-                                               p.Espera,
-                                               p.TRespuesta,
-                                               p.Retorno);
+            AddToBCP(p,5);
                 
                 
                 
         }
 
-        void addToBCP() 
-        { 
-        
-        
+        //nuevo - listo - ejecucion - bloqueado - terminadoError - terminadoCorrecto
+
+        /// <sumary>
+        ///  Cambia o agrega el estado del BCP
+        ///  0 - nuevo 
+        ///  1 - listo 
+        ///  2 - ejecucion 
+        ///  3 - bloqueado 
+        ///  4 - terminado por error 
+        ///  5 - terminado correctamente 
+        /// </sumary>
+        void AddToBCP(proceso p, byte type = 0) 
+        {
+
+           
+            switch (type) 
+            {
+                case 0: dataGridView4.Rows.Add(p.id, 
+                                               "Nuevo");
+                    break;
+                case 1:
+                    dataGridView4.Rows[p.id].SetValues(    p.id,
+                                                           "Listo",
+                                                           null,
+                                                           p.operacion,
+                                                           null,
+                                                           p.Llegada,
+                                                           null,
+                                                           null,
+                                                           p.Espera,
+                                                           p.TT,
+                                                           p.TME - p.TT,
+                                                           p.TT > 0? p.TRespuesta: null
+                                                           );
+                    break;
+                case 2: dataGridView4.Rows[p.id].SetValues(p.id,
+                                                           "Ejecucion",
+                                                           null,
+                                                           p.operacion,
+                                                           null,
+                                                           p.Llegada,
+                                                           null,
+                                                           null,
+                                                           p.Espera,
+                                                           p.TT,
+                                                           p.TME - p.TT,
+                                                           p.TT > 0 ? p.TRespuesta : null
+                                                           );
+                    break;
+                case 3:
+                    dataGridView4.Rows[p.id].SetValues(    p.id,
+                                                           "Bloqueado",
+                                                           8 - p.TTB,
+                                                           p.operacion,
+                                                           null,
+                                                           p.Llegada,
+                                                           null,
+                                                           null,
+                                                           p.Espera,
+                                                           p.TT,
+                                                           p.TME - p.TT,
+                                                           p.TT > 0 ? p.TRespuesta : null
+                                                           );
+                    break;
+                case 4:
+                    dataGridView4.Rows[p.id].SetValues(p.id,
+                                                           "Terminado",
+                                                           "Error",
+                                                           "Error",
+                                                           p.operacion,
+                                                           p.Llegada,
+                                                           p.Finalizacion,
+                                                           p.Retorno,
+                                                           p.Espera,
+                                                           p.TT,
+                                                           p.TME - p.TT,
+                                                           p.TT > 0 ? p.TRespuesta : null
+                                                           );
+                    break;
+                case 5:
+                    dataGridView4.Rows[p.id].SetValues(     p.id,
+                                                           "Terminado",
+                                                           "Correctamente",
+                                                           p.operacion,
+                                                           p.resultado,
+                                                           p.Llegada,
+                                                           p.Finalizacion,
+                                                           p.Retorno,
+                                                           p.Espera,
+                                                           p.TT,
+                                                           p.TME - p.TT,
+                                                           p.TT > 0 ? p.TRespuesta : null
+                                                           );
+                    break;
+
+            }
         }
 
         private void dgvProcessAdd(proceso p)
         {
             dataGridView2.Rows.Add(p.id, p.TME, p.TT);
+           
         }
 
         private void dgvBloquedAdd(proceso p)
@@ -351,7 +430,7 @@ namespace Practica_1
             MessageBox.Show($"Tiempo total de ejecucion: {time.total}", "Tiempo total", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             dataGridView4.Sort(ColId,ListSortDirection.Ascending);
-        
+
         }
 
         private void updateTime(bool Vacio = false)
@@ -470,6 +549,7 @@ namespace Practica_1
                 return;
 
             Bloqueados.Add(Ejecucion);
+            AddToBCP(Ejecucion,3);
             dgvBloquedAdd(Ejecucion);
             
             Ejecucion = null;
@@ -498,7 +578,7 @@ namespace Practica_1
             if (!KeyPreview)
                 return;
 
-            updateTime( Ejecucion == null );
+            updateTime(Ejecucion == null);
             
         }
 
