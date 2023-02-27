@@ -299,7 +299,7 @@ namespace Practica_1
                                         p.operacion, 
                                         Error ? "Error" : p.resultado);
 
-            AddToBCP(p,4);
+            AddToBCP(p,Error?(byte)4:(byte)5);
                 
                 
                 
