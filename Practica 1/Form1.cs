@@ -194,6 +194,7 @@ namespace Practica_1
             else 
             {
                 Ejecucion.TT++;
+                Ejecucion.Retorno++;
                 if (Ejecucion.TT == 1)
                     Ejecucion.TRespuesta = time.total - 1;
             }
@@ -235,6 +236,11 @@ namespace Practica_1
         private void countTime()
         {
             //conteo de bloqueados
+            for (int i = 0; i < Listos.Count(); i++)
+            {
+                Listos[i].Espera++;
+                Listos[i].Retorno++;
+            }
 
             for (int i = 0; i < Bloqueados.Count(); i++)
             {
@@ -255,11 +261,7 @@ namespace Practica_1
 
             }
          
-            for (int i = 0; i < Listos.Count(); i++) 
-            { 
-                Listos[i].Espera++;
-                Listos[i].Retorno++;
-            }
+            
 
 
         }
