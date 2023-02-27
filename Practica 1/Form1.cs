@@ -299,7 +299,7 @@ namespace Practica_1
                                         p.operacion, 
                                         Error ? "Error" : p.resultado);
 
-            AddToBCP(p,5);
+            AddToBCP(p,4);
                 
                 
                 
@@ -439,7 +439,9 @@ namespace Practica_1
             lblTranscurrido.Text = Vacio ? "" : (Ejecucion.TT).ToString();
             lblRestante.Text = Vacio ? "" : (Ejecucion.TME - Ejecucion.TT).ToString();
             progressBarProcess.Value = Vacio ? 0 : ((Ejecucion.TT) * 100 / Ejecucion.TME);
-            progressBarTotal.Value = ((time.total) * 100 / tm);
+            if (tm > 0)
+                progressBarTotal.Value = ((time.total) * 100 / tm);
+
         }
 
         private void updateProcess(bool Vacio = false)
