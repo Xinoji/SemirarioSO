@@ -12,6 +12,7 @@ namespace Practica_1
         #region atributos
         (int actual, int total) time;
         int tm;
+        int Quantum;
         List<int> id;
         List<proceso> Listos;
         proceso Ejecucion;
@@ -145,7 +146,7 @@ namespace Practica_1
             lblTT.Text = "0";
             lblTranscurrido.Text = "0";
             lblRestante.Text = (Ejecucion.TME - 0).ToString();
-            
+            Quantum = (int)numericUpDown2.Value;
             button1.Enabled = false;
             timer1.Start();
             this.KeyPreview = true;
@@ -184,7 +185,7 @@ namespace Practica_1
                 updateTime(Vacio: true);
                 return;
             }
-                
+            
 
             if (Ejecucion.TT == Ejecucion.TME)
             {
@@ -204,7 +205,13 @@ namespace Practica_1
 
             }
 
-            
+            if (time.actual == Quantum)
+            {
+                Listos.Add(Ejecucion);
+                dgvProcessAdd(Ejecucion);
+                next_process();
+                time.actual = 0;
+            }
 
             if (Ejecucion == null)
                 vacio = true;
@@ -256,6 +263,7 @@ namespace Practica_1
             Ejecucion.TT++;
             dataGridView4.Rows[Ejecucion.id].Cells[9].Value = Ejecucion.TT;
             Ejecucion.Retorno++;
+            time.actual++;
             if (Ejecucion.TT == 1)
                 Ejecucion.TRespuesta = time.total - 1;
             
@@ -299,7 +307,7 @@ namespace Practica_1
                                         p.operacion, 
                                         Error ? "Error" : p.resultado);
 
-            AddToBCP(p,5);
+            AddToBCP(p,Error ? (byte)4 : (byte)5);
                 
                 
                 
@@ -342,7 +350,7 @@ namespace Practica_1
                     break;
                 case 2: dataGridView4.Rows[p.id].SetValues(p.id,
                                                            "Ejecucion",
-                                                           null,
+                                                           Quantum - time.actual,
                                                            p.operacion,
                                                            null,
                                                            p.Llegada,
@@ -439,7 +447,11 @@ namespace Practica_1
             lblTranscurrido.Text = Vacio ? "" : (Ejecucion.TT).ToString();
             lblRestante.Text = Vacio ? "" : (Ejecucion.TME - Ejecucion.TT).ToString();
             progressBarProcess.Value = Vacio ? 0 : ((Ejecucion.TT) * 100 / Ejecucion.TME);
-            progressBarTotal.Value = ((time.total) * 100 / tm);
+
+            if (tm > 0 )
+                progressBarTotal.Value = ((time.total) * 100 / tm);
+
+            lblQuantum.Text = time.actual.ToString();
         }
 
         private void updateProcess(bool Vacio = false)
@@ -512,7 +524,8 @@ namespace Practica_1
                 case Keys.C: timer1.Enabled = true;  panelProcesar.Visible = true;  break;
                 case Keys.E: if (timer1.Enabled)     processError();                break;
                 case Keys.I: if (timer1.Enabled)     processInterruption();         break;
-                case Keys.T: timer1.Enabled = false; panelProcesar.Visible = false; break;
+                case Keys.T: if (Ejecucion != null)  AddToBCP(Ejecucion, 2);
+                             timer1.Enabled = false; panelProcesar.Visible = false; break;
                 case Keys.N: if (timer1.Enabled)     newProcess();                  break;
 
             }
@@ -548,6 +561,8 @@ namespace Practica_1
             if (Ejecucion == null)
                 return;
 
+            time.actual = 0;
+
             Bloqueados.Add(Ejecucion);
             AddToBCP(Ejecucion,3);
             dgvBloquedAdd(Ejecucion);
@@ -567,6 +582,7 @@ namespace Practica_1
             if (Ejecucion == null)
                 return;
 
+            time.actual = 0;
             int i;
             tm -= (Ejecucion.TME - Ejecucion.TT);
 

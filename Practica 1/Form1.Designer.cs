@@ -34,14 +34,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.ContentPanel = new System.Windows.Forms.Panel();
-            this.panelProcesos = new System.Windows.Forms.Panel();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Operacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TME = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.lblProcesos = new System.Windows.Forms.Label();
             this.panelProcesar = new System.Windows.Forms.Panel();
             this.lblLotes = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -61,6 +53,8 @@
             this.ColQueryTME = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TR = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.lblQuantum = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.lblRestante = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.lblTranscurrido = new System.Windows.Forms.Label();
@@ -73,9 +67,18 @@
             this.ttlID = new System.Windows.Forms.Label();
             this.progressBarTotal = new System.Windows.Forms.ProgressBar();
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
+            this.panelProcesos = new System.Windows.Forms.Panel();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Operacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TME = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.lblProcesos = new System.Windows.Forms.Label();
             this.panelResultados = new System.Windows.Forms.Panel();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Estado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColExtra = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -88,12 +91,9 @@
             this.TSer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColTRestante = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TRet = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.buttonsPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
-            this.panelProcesos.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.panelProcesar.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
@@ -101,6 +101,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.panel2.SuspendLayout();
+            this.panelProcesos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.panelResultados.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             this.SuspendLayout();
@@ -168,82 +173,6 @@
             this.ContentPanel.Name = "ContentPanel";
             this.ContentPanel.Size = new System.Drawing.Size(790, 406);
             this.ContentPanel.TabIndex = 1;
-            // 
-            // panelProcesos
-            // 
-            this.panelProcesos.Controls.Add(this.dataGridView1);
-            this.panelProcesos.Controls.Add(this.panel1);
-            this.panelProcesos.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelProcesos.Location = new System.Drawing.Point(0, 0);
-            this.panelProcesos.Name = "panelProcesos";
-            this.panelProcesos.Size = new System.Drawing.Size(790, 406);
-            this.panelProcesos.TabIndex = 1;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToResizeColumns = false;
-            this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ID,
-            this.Operacion,
-            this.TME});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.dataGridView1.Enabled = false;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 52);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(787, 354);
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // ID
-            // 
-            this.ID.FillWeight = 20F;
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            // 
-            // Operacion
-            // 
-            this.Operacion.FillWeight = 50F;
-            this.Operacion.HeaderText = "Operacion";
-            this.Operacion.Name = "Operacion";
-            // 
-            // TME
-            // 
-            this.TME.FillWeight = 20F;
-            this.TME.HeaderText = "TME";
-            this.TME.Name = "TME";
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.numericUpDown1);
-            this.panel1.Controls.Add(this.lblProcesos);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(790, 52);
-            this.panel1.TabIndex = 1;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(434, 18);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(49, 23);
-            this.numericUpDown1.TabIndex = 1;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
-            // lblProcesos
-            // 
-            this.lblProcesos.AutoSize = true;
-            this.lblProcesos.Location = new System.Drawing.Point(346, 20);
-            this.lblProcesos.Name = "lblProcesos";
-            this.lblProcesos.Size = new System.Drawing.Size(54, 15);
-            this.lblProcesos.TabIndex = 0;
-            this.lblProcesos.Text = "Procesos";
             // 
             // panelProcesar
             // 
@@ -429,6 +358,8 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.lblQuantum);
+            this.panel2.Controls.Add(this.label7);
             this.panel2.Controls.Add(this.lblRestante);
             this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.lblTranscurrido);
@@ -443,6 +374,24 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(266, 218);
             this.panel2.TabIndex = 1;
+            // 
+            // lblQuantum
+            // 
+            this.lblQuantum.AutoSize = true;
+            this.lblQuantum.Location = new System.Drawing.Point(119, 166);
+            this.lblQuantum.Name = "lblQuantum";
+            this.lblQuantum.Size = new System.Drawing.Size(49, 15);
+            this.lblQuantum.TabIndex = 17;
+            this.lblQuantum.Text = "######";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(20, 162);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(64, 15);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "Quantum :";
             // 
             // lblRestante
             // 
@@ -550,6 +499,100 @@
             this.progressBarProcess.Step = 1;
             this.progressBarProcess.TabIndex = 3;
             // 
+            // panelProcesos
+            // 
+            this.panelProcesos.Controls.Add(this.dataGridView1);
+            this.panelProcesos.Controls.Add(this.panel1);
+            this.panelProcesos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelProcesos.Location = new System.Drawing.Point(0, 0);
+            this.panelProcesos.Name = "panelProcesos";
+            this.panelProcesos.Size = new System.Drawing.Size(790, 406);
+            this.panelProcesos.TabIndex = 1;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToResizeColumns = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ID,
+            this.Operacion,
+            this.TME});
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.dataGridView1.Enabled = false;
+            this.dataGridView1.Location = new System.Drawing.Point(3, 52);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 25;
+            this.dataGridView1.Size = new System.Drawing.Size(787, 354);
+            this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // ID
+            // 
+            this.ID.FillWeight = 20F;
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            // 
+            // Operacion
+            // 
+            this.Operacion.FillWeight = 50F;
+            this.Operacion.HeaderText = "Operacion";
+            this.Operacion.Name = "Operacion";
+            // 
+            // TME
+            // 
+            this.TME.FillWeight = 20F;
+            this.TME.HeaderText = "TME";
+            this.TME.Name = "TME";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.numericUpDown2);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.numericUpDown1);
+            this.panel1.Controls.Add(this.lblProcesos);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(790, 52);
+            this.panel1.TabIndex = 1;
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(526, 20);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(49, 23);
+            this.numericUpDown2.TabIndex = 3;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(440, 22);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(83, 15);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "Quantum (RR)";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(302, 18);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(49, 23);
+            this.numericUpDown1.TabIndex = 1;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
+            // lblProcesos
+            // 
+            this.lblProcesos.AutoSize = true;
+            this.lblProcesos.Location = new System.Drawing.Point(234, 20);
+            this.lblProcesos.Name = "lblProcesos";
+            this.lblProcesos.Size = new System.Drawing.Size(54, 15);
+            this.lblProcesos.TabIndex = 0;
+            this.lblProcesos.Text = "Procesos";
+            // 
             // panelResultados
             // 
             this.panelResultados.Controls.Add(this.dataGridView4);
@@ -588,11 +631,6 @@
             this.dataGridView4.Size = new System.Drawing.Size(790, 406);
             this.dataGridView4.TabIndex = 3;
             this.dataGridView4.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView4_CellContentClick);
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // ColId
             // 
@@ -678,6 +716,11 @@
             this.TRet.Name = "TRet";
             this.TRet.ReadOnly = true;
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -692,11 +735,6 @@
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             this.buttonsPanel.ResumeLayout(false);
             this.ContentPanel.ResumeLayout(false);
-            this.panelProcesos.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.panelProcesar.ResumeLayout(false);
             this.panelProcesar.PerformLayout();
             this.panel4.ResumeLayout(false);
@@ -706,6 +744,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panelProcesos.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.panelResultados.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             this.ResumeLayout(false);
@@ -774,5 +818,9 @@
         private DataGridViewTextBoxColumn TSer;
         private DataGridViewTextBoxColumn ColTRestante;
         private DataGridViewTextBoxColumn TRet;
+        private NumericUpDown numericUpDown2;
+        private Label label4;
+        private Label lblQuantum;
+        private Label label7;
     }
 }
