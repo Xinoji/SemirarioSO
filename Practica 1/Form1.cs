@@ -534,6 +534,9 @@ namespace Practica_1
 
             AddProcess();
             dgvProcessAdd(Listos.Last());
+
+            if (Ejecucion == null)
+                next_process();
         }
 
         private int ProcessInMemory() 
