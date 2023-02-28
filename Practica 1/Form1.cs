@@ -40,6 +40,7 @@ namespace Practica_1
             int row;
             Random nums = new Random();
             char op;
+            bool a;
 
             while (numericUpDown1.Value > Rows.Count)
             {
