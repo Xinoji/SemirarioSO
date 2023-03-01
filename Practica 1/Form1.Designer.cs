@@ -75,10 +75,11 @@
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
             this.panelResultados = new System.Windows.Forms.Panel();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Estado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColExtra = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColTME = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColTT = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColOperacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColResultado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TiempoLlegada = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -88,6 +89,7 @@
             this.TSer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColTRestante = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TRet = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.buttonsPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
             this.panelProcesos.SuspendLayout();
@@ -570,6 +572,8 @@
             this.ColId,
             this.Estado,
             this.ColExtra,
+            this.ColTME,
+            this.ColTT,
             this.ColOperacion,
             this.ColResultado,
             this.TiempoLlegada,
@@ -589,17 +593,12 @@
             this.dataGridView4.TabIndex = 3;
             this.dataGridView4.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView4_CellContentClick);
             // 
-            // timer1
-            // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // ColId
             // 
-            this.ColId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ColId.HeaderText = "ID";
             this.ColId.Name = "ColId";
             this.ColId.ReadOnly = true;
+            this.ColId.Width = 30;
             // 
             // Estado
             // 
@@ -614,6 +613,20 @@
             this.ColExtra.HeaderText = "";
             this.ColExtra.Name = "ColExtra";
             this.ColExtra.ReadOnly = true;
+            // 
+            // ColTME
+            // 
+            this.ColTME.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColTME.HeaderText = "TME";
+            this.ColTME.Name = "ColTME";
+            this.ColTME.ReadOnly = true;
+            // 
+            // ColTT
+            // 
+            this.ColTT.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColTT.HeaderText = "TT";
+            this.ColTT.Name = "ColTT";
+            this.ColTT.ReadOnly = true;
             // 
             // ColOperacion
             // 
@@ -677,6 +690,11 @@
             this.TRet.HeaderText = "T Respuesta";
             this.TRet.Name = "TRet";
             this.TRet.ReadOnly = true;
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
             // 
@@ -765,6 +783,8 @@
         private DataGridViewTextBoxColumn ColId;
         private DataGridViewTextBoxColumn Estado;
         private DataGridViewTextBoxColumn ColExtra;
+        private DataGridViewTextBoxColumn ColTME;
+        private DataGridViewTextBoxColumn ColTT;
         private DataGridViewTextBoxColumn ColOperacion;
         private DataGridViewTextBoxColumn ColResultado;
         private DataGridViewTextBoxColumn TiempoLlegada;

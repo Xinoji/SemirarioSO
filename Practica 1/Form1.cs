@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
 using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace Practica_1
 {
@@ -60,7 +55,7 @@ namespace Practica_1
 
             while (numericUpDown1.Value < dataGridView1.Rows.Count)
                 Rows.RemoveAt(Rows.Count - 1);
-        
+
 
         }
 
@@ -97,8 +92,8 @@ namespace Practica_1
                 createProcess(row);
             }
         }
-   
-        
+
+
         private void reProcess(DataGridViewRow row)
         {
             Random nums = new Random();
@@ -117,7 +112,7 @@ namespace Practica_1
             row.Cells[1].Value = $"{nums.Next(0, 100)} {op} {nums.Next(0, 100)}";
             row.Cells[2].Value = nums.Next(5, 16);
         }
-    
+
         private void button1_Click(object sender, EventArgs e)
         {
             foreach (DataGridViewRow row in dataGridView1.Rows)
@@ -125,7 +120,7 @@ namespace Practica_1
 
             if (Nuevos.Count == 0)
                 return;
-            
+
             panelProcesos.Visible = !panelProcesos.Visible;
 
             time = (0, 0);
@@ -134,18 +129,18 @@ namespace Practica_1
             AddProcess();
             AddProcess();
             AddProcess();
-            
+
             foreach (proceso p in Listos)
                 dgvProcessAdd(p);
 
             next_process();
-            
+
             updateProcess();
 
             lblTT.Text = "0";
             lblTranscurrido.Text = "0";
             lblRestante.Text = (Ejecucion.TME - 0).ToString();
-            
+
             button1.Enabled = false;
             timer1.Start();
             this.KeyPreview = true;
@@ -153,38 +148,38 @@ namespace Practica_1
 
         }
 
-        private void AddProcess() 
-            {
-                proceso p;
+        private void AddProcess()
+        {
+            proceso p;
 
-                if(Nuevos.Count > 0) 
-                {
-                    p = Nuevos.Dequeue();
-                    p.Llegada = time.total;
-                    Listos.Add(p);
-                    lblLotes.Text = Nuevos.Count().ToString();
-                    AddToBCP(p,1);
-                    //agregar tiempo de llegada
-                }
+            if (Nuevos.Count > 0)
+            {
+                p = Nuevos.Dequeue();
+                p.Llegada = time.total;
+                Listos.Add(p);
+                lblLotes.Text = Nuevos.Count().ToString();
+                AddToBCP(p, 1);
+                //agregar tiempo de llegada
             }
+        }
 
 
         private void button2_Click(object sender, EventArgs e)
-            {
-                panelProcesar.Visible = !panelProcesar.Visible;
-            }
+        {
+            panelProcesar.Visible = !panelProcesar.Visible;
+        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             bool vacio = false;
             countTime();
 
-            if (Ejecucion == null) 
+            if (Ejecucion == null)
             {
                 updateTime(Vacio: true);
                 return;
             }
-                
+
 
             if (Ejecucion.TT == Ejecucion.TME)
             {
@@ -193,23 +188,21 @@ namespace Practica_1
                 addResultado(Ejecucion);
 
                 ProcessEnd();
-                
-                if (!KeyPreview) 
+
+                if (!KeyPreview)
                     return;
 
-                if (0 == Listos.Count())
+                if (Ejecucion == null)
                     vacio = true;
 
                 updateProcess(vacio);
 
             }
 
-            
-
             if (Ejecucion == null)
                 vacio = true;
-            
-                updateTime(vacio);
+
+            updateTime(vacio);
         }
 
         private void countTime()
@@ -221,7 +214,7 @@ namespace Practica_1
             {
                 Listos[i].Espera++;
                 Listos[i].Retorno++;
-                dataGridView4.Rows[Listos[i].id].Cells[8].Value = Listos[i].Espera;
+                dataGridView4.Rows[Listos[i].id].Cells[10].Value = Listos[i].Espera;
             }
 
             for (int i = 0; i < Bloqueados.Count(); i++)
@@ -231,7 +224,7 @@ namespace Practica_1
                 Bloqueados[i].Retorno++;
                 dataGridView5.Rows[i].Cells[1].Value = Bloqueados[i].TTB;
                 dataGridView4.Rows[Bloqueados[i].id].Cells[2].Value = 8 - Bloqueados[i].TTB;
-                dataGridView4.Rows[Bloqueados[i].id].Cells[8].Value = Bloqueados[i].Espera;
+                dataGridView4.Rows[Bloqueados[i].id].Cells[10].Value = Bloqueados[i].Espera;
 
                 if (Bloqueados[i].TTB == 8)
                 {
@@ -242,7 +235,7 @@ namespace Practica_1
                     Listos.Add(p);
                     dgvProcessAdd(p);
                     i--;
-                    AddToBCP(p,1);
+                    AddToBCP(p, 1);
                 }
 
             }
@@ -254,33 +247,34 @@ namespace Practica_1
                 return;
             }
             Ejecucion.TT++;
-            dataGridView4.Rows[Ejecucion.id].Cells[9].Value = Ejecucion.TT;
+            dataGridView4.Rows[Ejecucion.id].Cells[11].Value = Ejecucion.TT;
+            dataGridView4.Rows[Ejecucion.id].Cells[4].Value = Ejecucion.TT;
             Ejecucion.Retorno++;
             if (Ejecucion.TT == 1)
-                Ejecucion.TRespuesta = time.total - 1;
-            
+                Ejecucion.TRespuesta = time.total - 1 - Ejecucion.Llegada;
+
         }
 
         private void ProcessEnd()
         {
-            next_process();   
-            
+            next_process();
+
             if (Nuevos.Count > 0)
             {
                 AddProcess();
                 dgvProcessAdd(Listos.Last());
             }
-            
+
         }
 
-        private void next_process() 
+        private void next_process()
         {
-            if (Listos.Count > 0) 
+            if (Listos.Count > 0)
             {
                 Ejecucion = Listos.First();
                 Listos.RemoveAt(0);
                 dataGridView2.Rows.RemoveAt(0);
-                AddToBCP(Ejecucion,2);
+                AddToBCP(Ejecucion, 2);
                 updateProcess();
                 return;
             }
@@ -295,14 +289,14 @@ namespace Practica_1
         private void addResultado(proceso p, bool Error = false)
         {
             int i;
-            i = dataGridView3.Rows.Add( p.id, 
-                                        p.operacion, 
+            i = dataGridView3.Rows.Add(p.id,
+                                        p.operacion,
                                         Error ? "Error" : p.resultado);
 
-            AddToBCP(p,Error?(byte)4:(byte)5);
-                
-                
-                
+            AddToBCP(p, Error ? (byte)4 : (byte)5);
+
+
+
         }
 
         //nuevo - listo - ejecucion - bloqueado - terminadoError - terminadoCorrecto
@@ -316,19 +310,22 @@ namespace Practica_1
         ///  4 - terminado por error 
         ///  5 - terminado correctamente 
         /// </sumary>
-        void AddToBCP(proceso p, byte type = 0) 
+        void AddToBCP(proceso p, byte type = 0)
         {
 
-           
-            switch (type) 
+
+            switch (type)
             {
-                case 0: dataGridView4.Rows.Add(p.id, 
+                case 0:
+                    dataGridView4.Rows.Add(p.id,
                                                "Nuevo");
                     break;
                 case 1:
-                    dataGridView4.Rows[p.id].SetValues(    p.id,
+                    dataGridView4.Rows[p.id].SetValues(p.id,
                                                            "Listo",
                                                            null,
+                                                           p.TME,
+                                                           p.TT,
                                                            p.operacion,
                                                            null,
                                                            p.Llegada,
@@ -337,12 +334,15 @@ namespace Practica_1
                                                            p.Espera,
                                                            p.TT,
                                                            p.TME - p.TT,
-                                                           p.TT > 0? p.TRespuesta: null
+                                                           p.TT > 0 ? p.TRespuesta : null
                                                            );
                     break;
-                case 2: dataGridView4.Rows[p.id].SetValues(p.id,
+                case 2:
+                    dataGridView4.Rows[p.id].SetValues(p.id,
                                                            "Ejecucion",
                                                            null,
+                                                           p.TME,
+                                                           p.TT,
                                                            p.operacion,
                                                            null,
                                                            p.Llegada,
@@ -355,9 +355,11 @@ namespace Practica_1
                                                            );
                     break;
                 case 3:
-                    dataGridView4.Rows[p.id].SetValues(    p.id,
+                    dataGridView4.Rows[p.id].SetValues(p.id,
                                                            "Bloqueado",
                                                            8 - p.TTB,
+                                                           p.TME,
+                                                           p.TT,
                                                            p.operacion,
                                                            null,
                                                            p.Llegada,
@@ -373,8 +375,10 @@ namespace Practica_1
                     dataGridView4.Rows[p.id].SetValues(p.id,
                                                            "Terminado",
                                                            "Error",
-                                                           "Error",
+                                                           p.TME,
+                                                           p.TT,
                                                            p.operacion,
+                                                           "Error",
                                                            p.Llegada,
                                                            p.Finalizacion,
                                                            p.Retorno,
@@ -385,9 +389,11 @@ namespace Practica_1
                                                            );
                     break;
                 case 5:
-                    dataGridView4.Rows[p.id].SetValues(     p.id,
+                    dataGridView4.Rows[p.id].SetValues(p.id,
                                                            "Terminado",
                                                            "Correctamente",
+                                                           p.TME,
+                                                           p.TT,
                                                            p.operacion,
                                                            p.resultado,
                                                            p.Llegada,
@@ -406,12 +412,12 @@ namespace Practica_1
         private void dgvProcessAdd(proceso p)
         {
             dataGridView2.Rows.Add(p.id, p.TME, p.TT);
-           
+
         }
 
         private void dgvBloquedAdd(proceso p)
         {
-                                        //ID   TTB
+            //ID   TTB
             _ = dataGridView5.Rows.Add(p.id, 0);
 
         }
@@ -423,13 +429,13 @@ namespace Practica_1
             lblTT.Text = time.total.ToString();
             lblTranscurrido.Text = time.actual.ToString();
             progressBarTotal.Value = 100;
-            updateTime(Vacio: true);            
+            updateTime(Vacio: true);
 
             button2.Enabled = true;
             timer1.Stop();
             MessageBox.Show($"Tiempo total de ejecucion: {time.total}", "Tiempo total", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            dataGridView4.Sort(ColId,ListSortDirection.Ascending);
+            dataGridView4.Sort(ColId, ListSortDirection.Ascending);
 
         }
 
@@ -456,8 +462,8 @@ namespace Practica_1
         {
             string[] nums = new string[2];
             nums[0] = "error";
-            if (operacion.Contains('*')) 
-            { 
+            if (operacion.Contains('*'))
+            {
                 nums = (string[])operacion.Split('*');
                 return float.Parse(nums[0]) * float.Parse(nums[1]);
             }
@@ -469,14 +475,14 @@ namespace Practica_1
             }
 
             if (operacion.Contains('+'))
-            { 
+            {
                 nums = (string[])operacion.Split('+');
                 return (float.Parse(nums[0]) + float.Parse(nums[1]));
 
             }
 
             if (operacion.Contains('-'))
-            { 
+            {
                 nums = (string[])operacion.Split('-');
                 return (float.Parse(nums[0]) - float.Parse(nums[1]));
 
@@ -498,24 +504,24 @@ namespace Practica_1
 
         private void dataGridView4_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+
         }
         #region keyboard
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            
+
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            switch (e.KeyData) 
+            switch (e.KeyData)
             {
-                case Keys.P: timer1.Enabled = false;                                break;
-                case Keys.C: timer1.Enabled = true;  panelProcesar.Visible = true;  break;
-                case Keys.E: if (timer1.Enabled)     processError();                break;
-                case Keys.I: if (timer1.Enabled)     processInterruption();         break;
+                case Keys.P: timer1.Enabled = false; break;
+                case Keys.C: timer1.Enabled = true; panelProcesar.Visible = true; break;
+                case Keys.E: if (timer1.Enabled) processError(); break;
+                case Keys.I: if (timer1.Enabled) processInterruption(); break;
                 case Keys.T: timer1.Enabled = false; panelProcesar.Visible = false; break;
-                case Keys.N: if (timer1.Enabled)     newProcess();                  break;
+                case Keys.N: if (timer1.Enabled) newProcess(); break;
 
             }
         }
@@ -539,11 +545,11 @@ namespace Practica_1
                 next_process();
         }
 
-        private int ProcessInMemory() 
+        private int ProcessInMemory()
         {
-            return (Ejecucion == null ? 0 : 1) + 
-                    Bloqueados.Count + 
-                    Listos.Count ;
+            return (Ejecucion == null ? 0 : 1) +
+                    Bloqueados.Count +
+                    Listos.Count;
         }
 
         private void processInterruption()
@@ -554,17 +560,17 @@ namespace Practica_1
                 return;
 
             Bloqueados.Add(Ejecucion);
-            AddToBCP(Ejecucion,3);
+            AddToBCP(Ejecucion, 3);
             dgvBloquedAdd(Ejecucion);
-            
+
             Ejecucion = null;
 
             next_process();
             vacio = Ejecucion == null;
-                
+
             updateProcess(vacio);
             updateTime(vacio);
-            
+
         }
 
         private void processError()
@@ -577,19 +583,19 @@ namespace Practica_1
 
             Ejecucion.Finalizacion = time.total;
             addResultado(Ejecucion, Error: true);
-            
+
             ProcessEnd();
 
             if (!KeyPreview)
                 return;
 
             updateTime(Ejecucion == null);
-            
+
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-           
+
         }
         #endregion keyboard
     }
