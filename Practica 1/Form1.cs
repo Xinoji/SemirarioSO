@@ -3,6 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Practica_1
@@ -18,6 +19,7 @@ namespace Practica_1
         proceso Ejecucion;
         List<proceso> Bloqueados;
         Queue<proceso> Nuevos;
+        Memoria memoria;
         #endregion
 
         public Form1()
@@ -27,6 +29,7 @@ namespace Practica_1
             Bloqueados = new List<proceso>();
             Listos = new List<proceso>();
             id = new List<int>();
+            memoria = new Memoria();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -58,6 +61,7 @@ namespace Practica_1
                 Rows[row].Cells[0].Value = row;
                 Rows[row].Cells[1].Value = $"{nums.Next(0, 100)} {op} {nums.Next(0, 100)}";
                 Rows[row].Cells[2].Value = nums.Next(5, 16);
+                Rows[row].Cells[3].Value = nums.Next(6, 25);
             }
 
             while (numericUpDown1.Value < dataGridView1.Rows.Count)
@@ -86,7 +90,7 @@ namespace Practica_1
                 temp.operacion = (string)cells[1].Value;
 
                 temp.resultado = getOP(temp.operacion);
-
+                temp.size = Convert.ToByte(cells[3].Value);
                 temp.id = (int)cells[0].Value;
                 tm += temp.TME;
                 id.Add((int)cells[0].Value);
@@ -127,18 +131,13 @@ namespace Practica_1
 
             if (Nuevos.Count == 0)
                 return;
-            
+
+            InitializeFrames();
             panelProcesos.Visible = !panelProcesos.Visible;
 
             time = (0, 0);
 
             AddProcess();
-            AddProcess();
-            AddProcess();
-            AddProcess();
-            
-            foreach (proceso p in Listos)
-                dgvProcessAdd(p);
 
             next_process();
             
@@ -156,20 +155,70 @@ namespace Practica_1
         }
 
         private void AddProcess() 
+        {
+            proceso p;
+            int[]? frames;
+            if(Nuevos.Count > 0) 
             {
-                proceso p;
+                if ((frames = memoria.Addprocess(Nuevos.Peek())) == null) 
+                    return;
 
-                if(Nuevos.Count > 0) 
-                {
-                    p = Nuevos.Dequeue();
-                    p.Llegada = time.total;
-                    Listos.Add(p);
-                    lblLotes.Text = Nuevos.Count().ToString();
-                    AddToBCP(p,1);
-                    //agregar tiempo de llegada
-                }
+            
+                p = Nuevos.Dequeue();
+                p.Llegada = time.total;
+                Listos.Add(p);
+                lblLotes.Text = Nuevos.Count().ToString();
+                AddToBCP(p,1);
+                dgvProcessAdd(p);
+                //agregar a tabla de marcos
+                AddtoFrames(frames);
+                AddProcess();
             }
 
+        }
+
+        private void InitializeFrames()
+        {
+            var row = dataGridView6.Rows;
+            for (int i = 0; i < 20; i++)
+            {
+                row.Add();
+                row[i].Cells[0].Value = i * 2 + 1;
+                row[i].Cells[7].Value = i * 2 + 2;
+            }
+
+
+            var so = dataGridView6.Rows[19];
+            so.Cells[1].Value = "SO";
+            so.Cells[8].Value = "SO";
+
+            for (int i = 0; i < 5; i++)
+                so.Cells[2 + i].Style.BackColor = Color.Black;
+
+            for (int i = 0; i < 5; i++)
+                so.Cells[9 + i].Style.BackColor = Color.Black;
+
+        }
+
+        private void AddtoFrames(int[] frames)
+        {
+            int mod, index;
+            foreach (int frame in frames) 
+            {
+                mod = frame % 2;
+                index = (frame - mod) / 2;
+                int cell = 1;
+                int espacio = memoria.frames[frame].espacio;
+                var id = ((proceso)memoria.frames[frame].uso).id;
+                dataGridView6.Rows[index].Cells[(mod * 7) + cell++].Value = id;
+                while (espacio-- > 0)
+                {
+                    dataGridView6.Rows[index].Cells[(mod * 7) + cell++].Style.BackColor = Color.Green;
+                }
+
+
+            }
+        }
 
         private void button2_Click(object sender, EventArgs e)
             {
@@ -199,7 +248,7 @@ namespace Practica_1
                 if (!KeyPreview) 
                     return;
 
-                if (0 == Listos.Count())
+                if (Ejecucion == null)
                     vacio = true;
 
                 updateProcess(vacio);
@@ -210,6 +259,7 @@ namespace Practica_1
             {
                 Listos.Add(Ejecucion);
                 dgvProcessAdd(Ejecucion);
+                AddToBCP(Ejecucion,1);
                 next_process();
                 time.actual = 0;
             }
@@ -272,12 +322,14 @@ namespace Practica_1
 
         private void ProcessEnd()
         {
+            if (Ejecucion != null)
+                WipeFrames(Ejecucion);
+
             next_process();   
             
             if (Nuevos.Count > 0)
             {
                 AddProcess();
-                dgvProcessAdd(Listos.Last());
             }
             
         }
@@ -286,6 +338,7 @@ namespace Practica_1
         {
             if (Listos.Count > 0) 
             {
+                
                 Ejecucion = Listos.First();
                 Listos.RemoveAt(0);
                 dataGridView2.Rows.RemoveAt(0);
@@ -301,7 +354,24 @@ namespace Practica_1
                 terminar();
         }
 
-        private void addResultado(proceso p, bool Error = false)
+        private void WipeFrames(proceso p)
+        {
+            int mod, index;
+            foreach (int frame in memoria.RemoveProcess(p))
+            {
+                mod = frame % 2;
+                index = (frame - mod) / 2;
+                int cell = 1;
+                int espacio = 5;
+                dataGridView6.Rows[index].Cells[(mod * 7) + cell++].Value = null;
+                while (espacio-- > 0)
+                {
+                    dataGridView6.Rows[index].Cells[(mod * 7) + cell++].Style.BackColor = Color.White;
+                }
+
+            }
+        }
+            private void addResultado(proceso p, bool Error = false)
         {
             int i;
             i = dataGridView3.Rows.Add( p.id, 
@@ -522,11 +592,14 @@ namespace Practica_1
             switch (e.KeyData) 
             {
                 case Keys.P: timer1.Enabled = false;                                break;
-                case Keys.C: timer1.Enabled = true;  panelProcesar.Visible = true;  break;
+                case Keys.C: timer1.Enabled = true;  panelProcesar.Visible = true;
+                    panelFrames.Visible = false; break;
                 case Keys.E: if (timer1.Enabled)     processError();                break;
                 case Keys.I: if (timer1.Enabled)     processInterruption();         break;
                 case Keys.T: if (Ejecucion != null)  AddToBCP(Ejecucion, 2);
                              timer1.Enabled = false; panelProcesar.Visible = false; break;
+                case Keys.B: timer1.Enabled = false; panelFrames.Visible = true; 
+                    break;
                 case Keys.N: if (timer1.Enabled)     newProcess();                  break;
 
             }
@@ -541,11 +614,7 @@ namespace Practica_1
 
             lblLotes.Text = Nuevos.Count.ToString();
 
-            if (!(ProcessInMemory() < 4))
-                return;
-
             AddProcess();
-            dgvProcessAdd(Listos.Last());
         }
 
         private int ProcessInMemory() 
