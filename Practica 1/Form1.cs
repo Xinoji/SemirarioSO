@@ -593,14 +593,15 @@ namespace Practica_1
             {
                 case Keys.P: timer1.Enabled = false;                                break;
                 case Keys.C: timer1.Enabled = true;  panelProcesar.Visible = true;
-                    panelFrames.Visible = false; break;
+                             panelFrames.Visible = false;                           break;
                 case Keys.E: if (timer1.Enabled)     processError();                break;
                 case Keys.I: if (timer1.Enabled)     processInterruption();         break;
                 case Keys.T: if (Ejecucion != null)  AddToBCP(Ejecucion, 2);
                              timer1.Enabled = false; panelProcesar.Visible = false; break;
-                case Keys.B: timer1.Enabled = false; panelFrames.Visible = true; 
-                    break;
+                case Keys.A: timer1.Enabled = false; panelFrames.Visible = true; 
+                                                                                    break;
                 case Keys.N: if (timer1.Enabled)     newProcess();                  break;
+
 
             }
         }
