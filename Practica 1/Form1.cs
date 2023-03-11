@@ -30,6 +30,7 @@ namespace Practica_1
             Listos = new List<proceso>();
             id = new List<int>();
             memoria = new Memoria();
+            Disco.FilePath = "Suspendidos.json";
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -221,12 +222,14 @@ namespace Practica_1
         }
 
         private void button2_Click(object sender, EventArgs e)
-            {
-                panelProcesar.Visible = !panelProcesar.Visible;
-            }
+        {
+            panelProcesar.Visible = !panelProcesar.Visible;
+        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            var binaryFormatter = System.Text.Json.JsonSerializer.Serialize(Ejecucion);
+            var deserialize = System.Text.Json.JsonSerializer.Deserialize<proceso>(binaryFormatter);
             bool vacio = false;
             countTime();
 
@@ -267,14 +270,15 @@ namespace Practica_1
             if (Ejecucion == null)
                 vacio = true;
             
-                updateTime(vacio);
+            updateTime(vacio);
         }
 
         private void countTime()
         {
-            //conteo de bloqueados
+            
             time.total++;
-
+            
+            //conteo de bloqueados
             for (int i = 0; i < Listos.Count(); i++)
             {
                 Listos[i].Espera++;
@@ -371,7 +375,7 @@ namespace Practica_1
 
             }
         }
-            private void addResultado(proceso p, bool Error = false)
+        private void addResultado(proceso p, bool Error = false)
         {
             int i;
             i = dataGridView3.Rows.Add( p.id, 
@@ -601,9 +605,42 @@ namespace Practica_1
                 case Keys.A: timer1.Enabled = false; panelFrames.Visible = true; 
                                                                                     break;
                 case Keys.N: if (timer1.Enabled)     newProcess();                  break;
-
+                case Keys.S: if (timer1.Enabled) suspendProcess();  break;
+                case Keys.R: if (timer1.Enabled) returnProcess(); break;
 
             }
+        }
+
+        private void suspendProcess() 
+        {
+            proceso p;
+            
+            if (Bloqueados.Count == 0)
+                return;
+            
+            p = Bloqueados[0];
+            Bloqueados.RemoveAt(0);
+
+            Disco.Add(p);
+            memoria.RemoveProcess(p);
+
+            UpdateSuspendidos();
+        }
+
+        private void UpdateSuspendidos()
+        {
+            if (idSus.Text != "")
+                return;
+            
+            proceso? p = Disco.PeekFile();
+            idSus.Text = p.id.ToString();
+            sizeSus.Text = p.size.ToString();
+        }
+
+        private void returnProcess() 
+        {
+            
+            return;
         }
 
         private void newProcess()

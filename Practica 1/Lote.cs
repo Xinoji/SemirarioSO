@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Practica_1
 {
@@ -120,5 +121,49 @@ namespace Practica_1
         {
         }
     }
+        
+    public static class Disco 
+    {
+        public static string FilePath;
 
+        public static void Add(proceso proceso)
+        {
+            if (!File.Exists(FilePath))
+                File.Create(FilePath).Close();
+                
+            using (Stream stream = File.Open(FilePath, FileMode.Append))
+            {   
+                var Json = System.Text.Json.JsonSerializer.Serialize(proceso);
+                var file = File.AppendText(FilePath);
+                file.WriteLine(Json);
+            }
+
+        }
+
+        public static void DequeFile()
+        {
+            if (!File.Exists(FilePath))
+                return;
+
+            var lines = File.ReadAllLines(FilePath);
+            File.WriteAllLines(FilePath, lines.Skip(1).ToArray());
+
+        }
+
+        public static proceso? PeekFile() 
+        {
+            if (!File.Exists(FilePath))
+                return null;
+
+            using (StreamReader file = new StreamReader(FilePath))
+            {
+                string? json = file.ReadLine();
+                if (json == null)
+                    return null;
+                
+                return System.Text.Json.JsonSerializer.Deserialize<proceso>(json);
+            }
+        }    
+
+    }
 }
