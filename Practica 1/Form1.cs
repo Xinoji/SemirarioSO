@@ -228,7 +228,7 @@ namespace Practica_1
             {
                 Listos[i].Espera++;
                 Listos[i].Retorno++;
-                dataGridView4.Rows[Listos[i].id].Cells[8].Value = Listos[i].Espera;
+                dataGridView4.Rows[Listos[i].id].Cells[10].Value = Listos[i].Espera;
             }
 
             for (int i = 0; i < Bloqueados.Count(); i++)
@@ -238,7 +238,7 @@ namespace Practica_1
                 Bloqueados[i].Retorno++;
                 dataGridView5.Rows[i].Cells[1].Value = Bloqueados[i].TTB;
                 dataGridView4.Rows[Bloqueados[i].id].Cells[2].Value = 8 - Bloqueados[i].TTB;
-                dataGridView4.Rows[Bloqueados[i].id].Cells[8].Value = Bloqueados[i].Espera;
+                dataGridView4.Rows[Bloqueados[i].id].Cells[10].Value = Bloqueados[i].Espera;
 
                 if (Bloqueados[i].TTB == 8)
                 {
@@ -261,11 +261,12 @@ namespace Practica_1
                 return;
             }
             Ejecucion.TT++;
-            dataGridView4.Rows[Ejecucion.id].Cells[9].Value = Ejecucion.TT;
+            dataGridView4.Rows[Ejecucion.id].Cells[11].Value = Ejecucion.TT;
+            dataGridView4.Rows[Ejecucion.id].Cells[4].Value = Ejecucion.TT;
             Ejecucion.Retorno++;
             time.actual++;
             if (Ejecucion.TT == 1)
-                Ejecucion.TRespuesta = time.total - 1;
+                Ejecucion.TRespuesta = time.total - 1 - Ejecucion.Llegada;
             
         }
 
@@ -337,6 +338,8 @@ namespace Practica_1
                     dataGridView4.Rows[p.id].SetValues(    p.id,
                                                            "Listo",
                                                            null,
+                                                           p.TME,
+                                                           p.TT,
                                                            p.operacion,
                                                            null,
                                                            p.Llegada,
@@ -351,6 +354,8 @@ namespace Practica_1
                 case 2: dataGridView4.Rows[p.id].SetValues(p.id,
                                                            "Ejecucion",
                                                            Quantum - time.actual,
+                                                           p.TME,
+                                                           p.TT,
                                                            p.operacion,
                                                            null,
                                                            p.Llegada,
@@ -366,6 +371,8 @@ namespace Practica_1
                     dataGridView4.Rows[p.id].SetValues(    p.id,
                                                            "Bloqueado",
                                                            8 - p.TTB,
+                                                           p.TME,
+                                                           p.TT,
                                                            p.operacion,
                                                            null,
                                                            p.Llegada,
@@ -381,8 +388,10 @@ namespace Practica_1
                     dataGridView4.Rows[p.id].SetValues(p.id,
                                                            "Terminado",
                                                            "Error",
-                                                           "Error",
+                                                           p.TME,
+                                                           p.TT,
                                                            p.operacion,
+                                                           "Error",
                                                            p.Llegada,
                                                            p.Finalizacion,
                                                            p.Retorno,
@@ -396,6 +405,8 @@ namespace Practica_1
                     dataGridView4.Rows[p.id].SetValues(     p.id,
                                                            "Terminado",
                                                            "Correctamente",
+                                                           p.TME,
+                                                           p.TT,
                                                            p.operacion,
                                                            p.resultado,
                                                            p.Llegada,
@@ -545,6 +556,9 @@ namespace Practica_1
 
             AddProcess();
             dgvProcessAdd(Listos.Last());
+
+            if (Ejecucion == null)
+                next_process();
         }
 
         private int ProcessInMemory() 

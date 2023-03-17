@@ -82,6 +82,8 @@
             this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Estado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColExtra = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColTME = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColTT = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColOperacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColResultado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TiempoLlegada = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -613,6 +615,8 @@
             this.ColId,
             this.Estado,
             this.ColExtra,
+            this.ColTME,
+            this.ColTT,
             this.ColOperacion,
             this.ColResultado,
             this.TiempoLlegada,
@@ -634,10 +638,10 @@
             // 
             // ColId
             // 
-            this.ColId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ColId.HeaderText = "ID";
             this.ColId.Name = "ColId";
             this.ColId.ReadOnly = true;
+            this.ColId.Width = 30;
             // 
             // Estado
             // 
@@ -652,6 +656,20 @@
             this.ColExtra.HeaderText = "";
             this.ColExtra.Name = "ColExtra";
             this.ColExtra.ReadOnly = true;
+            // 
+            // ColTME
+            // 
+            this.ColTME.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColTME.HeaderText = "TME";
+            this.ColTME.Name = "ColTME";
+            this.ColTME.ReadOnly = true;
+            // 
+            // ColTT
+            // 
+            this.ColTT.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColTT.HeaderText = "TT";
+            this.ColTT.Name = "ColTT";
+            this.ColTT.ReadOnly = true;
             // 
             // ColOperacion
             // 
@@ -809,6 +827,8 @@
         private DataGridViewTextBoxColumn ColId;
         private DataGridViewTextBoxColumn Estado;
         private DataGridViewTextBoxColumn ColExtra;
+        private DataGridViewTextBoxColumn ColTME;
+        private DataGridViewTextBoxColumn ColTT;
         private DataGridViewTextBoxColumn ColOperacion;
         private DataGridViewTextBoxColumn ColResultado;
         private DataGridViewTextBoxColumn TiempoLlegada;
