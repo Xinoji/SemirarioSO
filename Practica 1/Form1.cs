@@ -31,6 +31,7 @@ namespace Practica_1
             id = new List<int>();
             memoria = new Memoria();
             Disco.FilePath = "Suspendidos.json";
+            Disco.ResetFile();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -152,13 +153,18 @@ namespace Practica_1
             timer1.Start();
             this.KeyPreview = true;
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-
+            numericUpDown1.Maximum = 999999;
         }
 
         private void AddProcess() 
         {
             proceso p;
             int[]? frames;
+            if (entry.Checked)
+            {
+                returnProcessToMemory();
+            }
+
             if(Nuevos.Count > 0) 
             {
                 if ((frames = memoria.Addprocess(Nuevos.Peek())) == null) 
@@ -228,8 +234,6 @@ namespace Practica_1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            var binaryFormatter = System.Text.Json.JsonSerializer.Serialize(Ejecucion);
-            var deserialize = System.Text.Json.JsonSerializer.Deserialize<proceso>(binaryFormatter);
             bool vacio = false;
             countTime();
 
@@ -331,7 +335,7 @@ namespace Practica_1
 
             next_process();   
             
-            if (Nuevos.Count > 0)
+            if (Nuevos.Count > 0 | entry.Checked)
             {
                 AddProcess();
             }
@@ -398,6 +402,7 @@ namespace Practica_1
         ///  3 - bloqueado 
         ///  4 - terminado por error 
         ///  5 - terminado correctamente 
+        ///  6 - suspendido
         /// </sumary>
         void AddToBCP(proceso p, byte type = 0) 
         {
@@ -482,7 +487,21 @@ namespace Practica_1
                                                            p.TT > 0 ? p.TRespuesta : null
                                                            );
                     break;
-
+                case 6:
+                    dataGridView4.Rows[p.id].SetValues(p.id,
+                                                           "Suspendido",
+                                                           null,
+                                                           p.operacion,
+                                                           null,
+                                                           p.Llegada,
+                                                           null,
+                                                           null,
+                                                           p.Espera,
+                                                           p.TT,
+                                                           p.TME - p.TT,
+                                                           p.TT > 0 ? p.TRespuesta : null
+                                                           );
+                    break;
             }
         }
 
@@ -620,11 +639,17 @@ namespace Practica_1
             
             p = Bloqueados[0];
             Bloqueados.RemoveAt(0);
-
+            dataGridView5.Rows.RemoveAt(0);
+           
             Disco.Add(p);
-            memoria.RemoveProcess(p);
-
+            WipeFrames(p);
+            AddToBCP(p, 6);
             UpdateSuspendidos();
+
+            if (Nuevos.Count > 0)
+            {
+                AddProcess();
+            }
         }
 
         private void UpdateSuspendidos()
@@ -633,14 +658,49 @@ namespace Practica_1
                 return;
             
             proceso? p = Disco.PeekFile();
+            if (p == null)
+                return;
             idSus.Text = p.id.ToString();
             sizeSus.Text = p.size.ToString();
         }
 
         private void returnProcess() 
         {
-            
-            return;
+            entry.Checked = true;
+            returnProcessToMemory();
+
+        }
+
+        private bool returnProcessToMemory()
+        {
+            proceso p;
+            int[]? frames;
+
+            if (idSus.Text == "") 
+            {
+                entry.Checked = false;
+                return true;
+            }
+
+
+            p = Disco.PeekFile();
+           
+            if ((frames = memoria.Addprocess(p)) == null)
+                return false;
+
+            entry.Checked = false;
+
+            Disco.DequeFile();
+
+            Listos.Add(p);
+            AddToBCP(p, 1);
+            AddtoFrames(frames);
+            dgvProcessAdd(p);
+
+            idSus.Text = "";
+            sizeSus.Text = "";
+            UpdateSuspendidos();
+            return true;
         }
 
         private void newProcess()
@@ -659,7 +719,8 @@ namespace Practica_1
         {
             return (Ejecucion == null ? 0 : 1) + 
                     Bloqueados.Count + 
-                    Listos.Count ;
+                    Listos.Count +
+                   (idSus.Text == "" ? 0 : 1);
         }
 
         private void processInterruption()

@@ -128,16 +128,15 @@ namespace Practica_1
 
         public static void Add(proceso proceso)
         {
-            if (!File.Exists(FilePath))
+            if (!File.Exists(FilePath)) 
                 File.Create(FilePath).Close();
                 
-            using (Stream stream = File.Open(FilePath, FileMode.Append))
-            {   
-                var Json = System.Text.Json.JsonSerializer.Serialize(proceso);
-                var file = File.AppendText(FilePath);
-                file.WriteLine(Json);
-            }
-
+            
+            var Json = System.Text.Json.JsonSerializer.Serialize(proceso);
+            var file = File.AppendText(FilePath);
+            file.WriteLine(Json);
+            file.Close();
+            
         }
 
         public static void DequeFile()
@@ -147,6 +146,17 @@ namespace Practica_1
 
             var lines = File.ReadAllLines(FilePath);
             File.WriteAllLines(FilePath, lines.Skip(1).ToArray());
+
+        }
+
+        public static void ResetFile()
+        {
+            if (!File.Exists(FilePath))
+                return;
+
+            
+            File.Delete(FilePath);
+            File.Create(FilePath).Close();
 
         }
 
