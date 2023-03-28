@@ -1,0 +1,17 @@
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\bin\Release\net6.0-windows\Simulador.exe
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\bin\Release\net6.0-windows\Simulador.deps.json
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\bin\Release\net6.0-windows\Simulador.runtimeconfig.json
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\bin\Release\net6.0-windows\Simulador.dll
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\bin\Release\net6.0-windows\Simulador.pdb
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\obj\Release\net6.0-windows\Simulador.csproj.AssemblyReference.cache
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\obj\Release\net6.0-windows\Practica_1.Form1.resources
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\obj\Release\net6.0-windows\Simulador.csproj.GenerateResource.cache
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\obj\Release\net6.0-windows\Simulador.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\obj\Release\net6.0-windows\Simulador.AssemblyInfoInputs.cache
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\obj\Release\net6.0-windows\Simulador.AssemblyInfo.cs
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\obj\Release\net6.0-windows\Simulador.csproj.CoreCompileInputs.cache
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\obj\Release\net6.0-windows\Simulador.dll
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\obj\Release\net6.0-windows\refint\Simulador.dll
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\obj\Release\net6.0-windows\Simulador.pdb
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\obj\Release\net6.0-windows\Simulador.genruntimeconfig.cache
+C:\Users\DELL\Desktop\´SSO Programa\SemirarioSO\Practica 1\obj\Release\net6.0-windows\ref\Simulador.dll

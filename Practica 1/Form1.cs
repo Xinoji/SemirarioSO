@@ -175,6 +175,10 @@ namespace Practica_1
                 p.Llegada = time.total;
                 Listos.Add(p);
                 lblLotes.Text = Nuevos.Count().ToString();
+                if (Nuevos.Count > 0)
+                    lblSize.Text = Nuevos.Peek().size.ToString();
+                else
+                    lblSize.Text = "0";
                 AddToBCP(p,1);
                 dgvProcessAdd(p);
                 //agregar a tabla de marcos
@@ -713,6 +717,11 @@ namespace Practica_1
 
             lblLotes.Text = Nuevos.Count.ToString();
 
+            if (Nuevos.Count > 0)
+                lblSize.Text = Nuevos.Peek().size.ToString();
+            else
+                lblSize.Text = "0";
+
             AddProcess();
         }
 
@@ -773,5 +782,10 @@ namespace Practica_1
            
         }
         #endregion keyboard
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
