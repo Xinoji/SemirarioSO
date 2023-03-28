@@ -334,9 +334,9 @@
             this.Espacio41,
             this.Espacio51});
             this.dataGridView6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView6.Enabled = false;
             this.dataGridView6.Location = new System.Drawing.Point(0, 0);
             this.dataGridView6.Name = "dataGridView6";
+            this.dataGridView6.ReadOnly = true;
             this.dataGridView6.RowHeadersVisible = false;
             this.dataGridView6.RowTemplate.Height = 25;
             this.dataGridView6.Size = new System.Drawing.Size(795, 409);
@@ -347,82 +347,96 @@
             this.NFrame.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.NFrame.HeaderText = "N";
             this.NFrame.Name = "NFrame";
+            this.NFrame.ReadOnly = true;
             // 
             // P_ID
             // 
             this.P_ID.HeaderText = "Process";
             this.P_ID.Name = "P_ID";
+            this.P_ID.ReadOnly = true;
             // 
             // Espacio1
             // 
             this.Espacio1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Espacio1.HeaderText = "";
             this.Espacio1.Name = "Espacio1";
+            this.Espacio1.ReadOnly = true;
             // 
             // Espacio2
             // 
             this.Espacio2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Espacio2.HeaderText = "";
             this.Espacio2.Name = "Espacio2";
+            this.Espacio2.ReadOnly = true;
             // 
             // Espacio3
             // 
             this.Espacio3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Espacio3.HeaderText = "";
             this.Espacio3.Name = "Espacio3";
+            this.Espacio3.ReadOnly = true;
             // 
             // Espacio4
             // 
             this.Espacio4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Espacio4.HeaderText = "";
             this.Espacio4.Name = "Espacio4";
+            this.Espacio4.ReadOnly = true;
             // 
             // Espacio5
             // 
             this.Espacio5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Espacio5.HeaderText = "";
             this.Espacio5.Name = "Espacio5";
+            this.Espacio5.ReadOnly = true;
             // 
             // NFrame2
             // 
             this.NFrame2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.NFrame2.HeaderText = "N";
             this.NFrame2.Name = "NFrame2";
+            this.NFrame2.ReadOnly = true;
             // 
             // P_ID2
             // 
             this.P_ID2.HeaderText = "Process";
             this.P_ID2.Name = "P_ID2";
+            this.P_ID2.ReadOnly = true;
             // 
             // Espacio11
             // 
             this.Espacio11.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Espacio11.HeaderText = "";
             this.Espacio11.Name = "Espacio11";
+            this.Espacio11.ReadOnly = true;
             // 
             // Espacio21
             // 
             this.Espacio21.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Espacio21.HeaderText = "";
             this.Espacio21.Name = "Espacio21";
+            this.Espacio21.ReadOnly = true;
             // 
             // Espacio31
             // 
             this.Espacio31.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Espacio31.HeaderText = "";
             this.Espacio31.Name = "Espacio31";
+            this.Espacio31.ReadOnly = true;
             // 
             // Espacio41
             // 
             this.Espacio41.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Espacio41.HeaderText = "";
             this.Espacio41.Name = "Espacio41";
+            this.Espacio41.ReadOnly = true;
             // 
             // Espacio51
             // 
             this.Espacio51.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Espacio51.HeaderText = "";
             this.Espacio51.Name = "Espacio51";
+            this.Espacio51.ReadOnly = true;
             // 
             // panelProcesar
             // 

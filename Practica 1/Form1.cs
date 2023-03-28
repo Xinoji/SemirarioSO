@@ -246,6 +246,7 @@ namespace Practica_1
 
             if (Ejecucion.TT == Ejecucion.TME)
             {
+                time.actual = 0;
                 Ejecucion.Finalizacion = time.total;
 
                 addResultado(Ejecucion);
