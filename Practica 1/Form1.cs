@@ -176,9 +176,15 @@ namespace Practica_1
                 Listos.Add(p);
                 lblLotes.Text = Nuevos.Count().ToString();
                 if (Nuevos.Count > 0)
+                {
                     lblSize.Text = Nuevos.Peek().size.ToString();
+                    lblIdNuevo.Text = Nuevos.Peek().id.ToString();
+                }
                 else
+                {
                     lblSize.Text = "0";
+                    lblIdNuevo.Text = "";
+                }
                 AddToBCP(p,1);
                 dgvProcessAdd(p);
                 //agregar a tabla de marcos
@@ -718,9 +724,15 @@ namespace Practica_1
             lblLotes.Text = Nuevos.Count.ToString();
 
             if (Nuevos.Count > 0)
+            {
                 lblSize.Text = Nuevos.Peek().size.ToString();
+                lblIdNuevo.Text = Nuevos.Peek().id.ToString();
+            }
             else
+            {
                 lblSize.Text = "0";
+                lblIdNuevo.Text = "";
+            }
 
             AddProcess();
         }

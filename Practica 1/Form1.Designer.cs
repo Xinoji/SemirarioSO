@@ -35,6 +35,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.ContentPanel = new System.Windows.Forms.Panel();
             this.panelProcesar = new System.Windows.Forms.Panel();
+            this.lblIdNuevo = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.lblSize = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.entry = new System.Windows.Forms.CheckBox();
@@ -204,6 +206,8 @@
             // 
             // panelProcesar
             // 
+            this.panelProcesar.Controls.Add(this.lblIdNuevo);
+            this.panelProcesar.Controls.Add(this.label13);
             this.panelProcesar.Controls.Add(this.lblSize);
             this.panelProcesar.Controls.Add(this.label12);
             this.panelProcesar.Controls.Add(this.entry);
@@ -227,10 +231,28 @@
             this.panelProcesar.Size = new System.Drawing.Size(795, 409);
             this.panelProcesar.TabIndex = 1;
             // 
+            // lblIdNuevo
+            // 
+            this.lblIdNuevo.AutoSize = true;
+            this.lblIdNuevo.Location = new System.Drawing.Point(177, 338);
+            this.lblIdNuevo.Name = "lblIdNuevo";
+            this.lblIdNuevo.Size = new System.Drawing.Size(35, 15);
+            this.lblIdNuevo.TabIndex = 17;
+            this.lblIdNuevo.Text = "####";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(160, 338);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(18, 15);
+            this.label13.TabIndex = 16;
+            this.label13.Text = "ID";
+            // 
             // lblSize
             // 
             this.lblSize.AutoSize = true;
-            this.lblSize.Location = new System.Drawing.Point(183, 338);
+            this.lblSize.Location = new System.Drawing.Point(243, 338);
             this.lblSize.Name = "lblSize";
             this.lblSize.Size = new System.Drawing.Size(35, 15);
             this.lblSize.TabIndex = 15;
@@ -240,7 +262,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(150, 337);
+            this.label12.Location = new System.Drawing.Point(210, 337);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(27, 15);
             this.label12.TabIndex = 14;
@@ -1101,5 +1123,7 @@
         private CheckBox entry;
         private Label lblSize;
         private Label label12;
+        private Label lblIdNuevo;
+        private Label label13;
     }
 }
