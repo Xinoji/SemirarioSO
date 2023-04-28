@@ -3,6 +3,8 @@ using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Reflection;
+using System.Security.Policy;
 using System.Text;
 using System.Windows.Forms;
 
@@ -20,6 +22,7 @@ namespace Practica_1
         List<proceso> Bloqueados;
         Queue<proceso> Nuevos;
         Memoria memoria;
+        form form;
         #endregion
 
         public Form1()
@@ -154,6 +157,8 @@ namespace Practica_1
             this.KeyPreview = true;
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             numericUpDown1.Maximum = 999999;
+            form = new form(panelFrames, Form1_KeyUp);
+            form.Show();
         }
 
         private void AddProcess() 
@@ -217,8 +222,69 @@ namespace Practica_1
 
         }
 
-        private void AddtoFrames(int[] frames)
+        private void ColorFrames()
         {
+            const int subRow = 7;
+            const int notFound = -1;
+                             //   Listo     Ejecucion   Bloqueado
+            Color[] colors = { Color.Gray, Color.Green, Color.Red};
+            Color color;
+            int mod, index, processState;
+            for (int frame = 0; frame < 38; frame++)
+            {
+                mod = frame % 2;
+                index = (frame - mod) / 2;
+                int cell = 1;
+                if (dataGridView6.Rows[index].Cells[(mod * subRow) + cell].Value == null)
+                    continue;
+                processState = IdProcessState((int)dataGridView6.Rows[index].Cells[(mod * subRow) + cell++].Value);
+                
+                if (processState == notFound)
+                    continue;
+
+                color = dataGridView6.Rows[index].Cells[(mod * subRow) + cell].Style.BackColor;
+
+                while (color != Color.White && color != Color.Empty && cell < subRow)
+                {
+                    dataGridView6.Rows[index].Cells[(mod * subRow) + cell++].Style.BackColor = colors[processState];
+
+                    if (cell >= subRow)
+                        continue;
+
+                    color = dataGridView6.Rows[index].Cells[(mod * subRow) + cell].Style.BackColor;
+                }
+
+            }
+
+        }
+        //retorna a cual lista de procesos pertenece
+        //0 - Listos / 1 - Ejecucion / 2 - Bloqueado / -1 No se encontro 
+        private int IdProcessState(int value)
+        {
+            if (Listos.Any(p => p.id == value))
+                return 0;
+
+            if (Ejecucion.id == value)
+                return 1;
+            
+            if (Bloqueados.Any(p => p.id == value))
+                return 2;
+            
+            return -1;
+        }
+
+        private void UnColorFrames()
+        {
+            foreach (DataGridViewRow row in dataGridView6.Rows)
+                foreach (DataGridViewCell cell in row.Cells) 
+                {
+                    if (cell.Style.BackColor != Color.Black && cell.Style.BackColor != Color.White && 
+                        cell.Style.BackColor != Color.Empty)
+                        cell.Style.BackColor = Color.Green;
+                }
+        }
+        private void AddtoFrames(int[] frames)
+        {           
             int mod, index;
             foreach (int frame in frames) 
             {
@@ -292,23 +358,25 @@ namespace Practica_1
         {
             
             time.total++;
-            
-            //conteo de bloqueados
-            for (int i = 0; i < Listos.Count(); i++)
+
+            foreach (DataGridViewRow row in dataGridView4.Rows) 
             {
-                Listos[i].Espera++;
-                Listos[i].Retorno++;
-                dataGridView4.Rows[Listos[i].id].Cells[8].Value = Listos[i].Espera;
+                if (row.Cells[9].Value == null)
+                    continue;
+
+                row.Cells[8].Value = time.total - (int)row.Cells[5].Value - (int)row.Cells[9].Value;
             }
+
+
+            //conteo de bloqueados
+
 
             for (int i = 0; i < Bloqueados.Count(); i++)
             {
                 Bloqueados[i].TTB++;
-                Bloqueados[i].Espera++;
-                Bloqueados[i].Retorno++;
+
                 dataGridView5.Rows[i].Cells[1].Value = Bloqueados[i].TTB;
                 dataGridView4.Rows[Bloqueados[i].id].Cells[2].Value = 8 - Bloqueados[i].TTB;
-                dataGridView4.Rows[Bloqueados[i].id].Cells[8].Value = Bloqueados[i].Espera;
 
                 if (Bloqueados[i].TTB == 8)
                 {
@@ -331,8 +399,7 @@ namespace Practica_1
                 return;
             }
             Ejecucion.TT++;
-            dataGridView4.Rows[Ejecucion.id].Cells[9].Value = Ejecucion.TT;
-            Ejecucion.Retorno++;
+            dataGridView4.Rows[Ejecucion.id].Cells[9].Value = Ejecucion.TT;;
             time.actual++;
             if (Ejecucion.TT == 1)
                 Ejecucion.TRespuesta = time.total - 1;
@@ -433,7 +500,7 @@ namespace Practica_1
                                                            p.Llegada,
                                                            null,
                                                            null,
-                                                           p.Espera,
+                                                           time.total - p.Llegada - p.TT,
                                                            p.TT,
                                                            p.TME - p.TT,
                                                            p.TT > 0? p.TRespuesta: null
@@ -447,7 +514,7 @@ namespace Practica_1
                                                            p.Llegada,
                                                            null,
                                                            null,
-                                                           p.Espera,
+                                                           time.total - p.Llegada - p.TT,
                                                            p.TT,
                                                            p.TME - p.TT,
                                                            p.TT > 0 ? p.TRespuesta : null
@@ -462,7 +529,7 @@ namespace Practica_1
                                                            p.Llegada,
                                                            null,
                                                            null,
-                                                           p.Espera,
+                                                           time.total - p.Llegada - p.TT,
                                                            p.TT,
                                                            p.TME - p.TT,
                                                            p.TT > 0 ? p.TRespuesta : null
@@ -476,8 +543,8 @@ namespace Practica_1
                                                            p.operacion,
                                                            p.Llegada,
                                                            p.Finalizacion,
-                                                           p.Retorno,
-                                                           p.Espera,
+                                                           p.Finalizacion - p.Llegada,
+                                                           time.total - p.Llegada - p.TT,
                                                            p.TT,
                                                            p.TME - p.TT,
                                                            p.TT > 0 ? p.TRespuesta : null
@@ -491,8 +558,8 @@ namespace Practica_1
                                                            p.resultado,
                                                            p.Llegada,
                                                            p.Finalizacion,
-                                                           p.Retorno,
-                                                           p.Espera,
+                                                           p.Finalizacion - p.Llegada,
+                                                           time.total - p.Llegada - p.TT,
                                                            p.TT,
                                                            p.TME - p.TT,
                                                            p.TT > 0 ? p.TRespuesta : null
@@ -507,7 +574,7 @@ namespace Practica_1
                                                            p.Llegada,
                                                            null,
                                                            null,
-                                                           p.Espera,
+                                                           time.total - p.Llegada - p.TT,
                                                            p.TT,
                                                            p.TME - p.TT,
                                                            p.TT > 0 ? p.TRespuesta : null
@@ -623,22 +690,26 @@ namespace Practica_1
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
+            ((Form)(e.KeyData == Keys.A ? form : this)).BringToFront();
+
             switch (e.KeyData) 
             {
                 case Keys.P: timer1.Enabled = false;                                break;
                 case Keys.C: timer1.Enabled = true;  panelProcesar.Visible = true;
-                             panelFrames.Visible = false;                           break;
+                     UnColorFrames();                                               break;
+
                 case Keys.E: if (timer1.Enabled)     processError();                break;
                 case Keys.I: if (timer1.Enabled)     processInterruption();         break;
-                case Keys.T: if (Ejecucion != null)  AddToBCP(Ejecucion, 2);
+                case Keys.T: if (Ejecucion != null)  AddToBCP(Ejecucion, 2); 
                              timer1.Enabled = false; panelProcesar.Visible = false; break;
-                case Keys.A: timer1.Enabled = false; panelFrames.Visible = true; 
+                case Keys.A: timer1.Enabled = false; ColorFrames();             
                                                                                     break;
                 case Keys.N: if (timer1.Enabled)     newProcess();                  break;
-                case Keys.S: if (timer1.Enabled) suspendProcess();  break;
-                case Keys.R: if (timer1.Enabled) returnProcess(); break;
+                case Keys.S: if (timer1.Enabled) suspendProcess();                  break;
+                case Keys.R: if (timer1.Enabled) returnProcess();                   break;
 
             }
+
         }
 
         private void suspendProcess() 
@@ -796,6 +867,11 @@ namespace Practica_1
         #endregion keyboard
 
         private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView6_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
