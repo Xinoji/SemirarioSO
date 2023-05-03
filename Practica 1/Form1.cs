@@ -364,6 +364,9 @@ namespace Practica_1
                 if (row.Cells[9].Value == null)
                     continue;
 
+                if ((string)row.Cells[1].Value == "Terminado")
+                    continue;
+                
                 row.Cells[8].Value = time.total - (int)row.Cells[5].Value - (int)row.Cells[9].Value;
             }
 
@@ -724,6 +727,9 @@ namespace Practica_1
             dataGridView5.Rows.RemoveAt(0);
            
             Disco.Add(p);
+            lblSuspendidos.Text = (Convert.ToInt32(lblSuspendidos.Text) + 1).ToString();
+
+
             WipeFrames(p);
             AddToBCP(p, 6);
             UpdateSuspendidos();
@@ -772,7 +778,7 @@ namespace Practica_1
 
             entry.Checked = false;
 
-            Disco.DequeFile();
+            lblSuspendidos.Text = (Disco.DequeFile() - 1).ToString();
 
             Listos.Add(p);
             AddToBCP(p, 1);
@@ -872,6 +878,11 @@ namespace Practica_1
         }
 
         private void dataGridView6_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
         {
 
         }

@@ -139,14 +139,15 @@ namespace Practica_1
             
         }
 
-        public static void DequeFile()
+        public static int DequeFile()
         {
             if (!File.Exists(FilePath))
-                return;
+                return 0;
 
             var lines = File.ReadAllLines(FilePath);
             File.WriteAllLines(FilePath, lines.Skip(1).ToArray());
 
+            return lines.Length;
         }
 
         public static void ResetFile()
